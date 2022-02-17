@@ -1,12 +1,12 @@
 {
-  "name": "package-name",
+  "name": "@storybook/csf-mdx2",
   "version": "0.0.0",
-  "description": "package-description",
+  "description": "MDX to CSF compiler using MDXv2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/package-base-name"
+    "url": "https://github.com/storybookjs/csf-mdx2"
   },
-  "author": "package-author",
+  "author": "Michael Shilman <michael@lab80.co>",
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -32,8 +32,6 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "prettier": "prettier",
-    "prerelease": "node scripts/prepublish-checks.js",
-    "postinstall": "node scripts/welcome-message.js",
     "prepare": "husky install"
   },
   "devDependencies": {
