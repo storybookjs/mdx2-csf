@@ -8,8 +8,8 @@
   },
   "author": "Michael Shilman <michael@lab80.co>",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "loader.js",
+  "main": "loader.js",
+  "module": "dist/esm/index.js",
   "types": "dist/ts/index.d.ts",
   "files": [
     "dist/**/*",
