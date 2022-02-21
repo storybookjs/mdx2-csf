@@ -9,7 +9,10 @@ const compile = async (code) => {
   const { toEstree } = await import('hast-util-to-estree');
 
   const store = { exports: '', toEstree };
-  const output = await compile(code, { rehypePlugins: [[plugin, store]] });
+  const output = await compile(code, {
+    rehypePlugins: [[plugin, store]],
+    providerImportSource: '@mdx-js/react',
+  });
   const processed = postprocess(output.toString(), store.exports);
   return processed;
 };
