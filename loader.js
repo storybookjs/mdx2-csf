@@ -19,9 +19,10 @@ const compile = async (code) => {
 const loader = async function (content) {
   const callback = this.async();
   // NOTE: this.getOptions() is webpack5 only
-  const options = Object.assign({}, this.getOptions(), {
+  // const queryOptions = this.getOptions()
+  const options = {
     filepath: this.resourcePath,
-  });
+  };
 
   let result;
   try {
