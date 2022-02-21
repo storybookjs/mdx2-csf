@@ -1,6 +1,8 @@
 const { plugin, postprocess } = require('./dist/cjs');
 
-const DEFAULT_RENDERER = '';
+const DEFAULT_RENDERER = `
+import React from 'react';
+`;
 
 const compile = async (code) => {
   // This async import is needed because these libraries are ESM
@@ -31,7 +33,8 @@ const loader = async function (content) {
     return callback(err);
   }
 
-  return callback(null, result);
+  const code = `${DEFAULT_RENDERER}\n${result}`;
+  return callback(null, code);
 };
 
 module.exports = loader;
