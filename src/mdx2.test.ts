@@ -1,6 +1,6 @@
 import { dedent } from 'ts-dedent';
 import prettier from 'prettier';
-import { compileSync, SEPARATOR, wrapperJs } from './mdx2-compiler';
+import { compileSync, SEPARATOR, wrapperJs } from './mdx2';
 
 // @ts-ignore
 expect.addSnapshotSerializer({
