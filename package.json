@@ -1,7 +1,7 @@
 {
-  "name": "@storybook/csf-mdx2",
+  "name": "@storybook/mdx2-csf-loader",
   "version": "0.0.0",
-  "description": "MDX to CSF compiler using MDXv2",
+  "description": "MDXv2 to CSF webpack loader and compiler",
   "repository": {
     "type": "git",
     "url": "https://github.com/storybookjs/csf-mdx2"
@@ -9,7 +9,7 @@
   "author": "Michael Shilman <michael@lab80.co>",
   "license": "MIT",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "loader.js",
   "types": "dist/ts/index.d.ts",
   "files": [
     "dist/**/*",
@@ -34,6 +34,16 @@
     "prettier": "prettier",
     "prepare": "husky install"
   },
+  "dependencies": {
+    "@babel/generator": "^7.12.11",
+    "@babel/parser": "^7.12.11",
+    "@mdx-js/mdx": "^2.0.0",
+    "estree-to-babel": "^4.9.0",
+    "hast-util-to-estree": "^2.0.2",
+    "js-string-escape": "^1.0.1",
+    "loader-utils": "^3.2.0",
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
@@ -47,12 +57,16 @@
     "@storybook/addon-essentials": "^6.5.0-alpha.36",
     "@storybook/addon-interactions": "^6.5.0-alpha.36",
     "@storybook/addon-links": "^6.5.0-alpha.36",
+    "@storybook/builder-webpack5": "^6.5.0-alpha.36",
+    "@storybook/manager-webpack5": "^6.5.0-alpha.36",
     "@storybook/react": "^6.5.0-alpha.36",
     "@storybook/testing-library": "^0.0.9",
     "@testing-library/dom": "^8.1.0",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.3",
+    "@types/js-string-escape": "^1.0.1",
+    "@types/lodash": "^4.14.167",
     "@types/node": "^16.4.1",
     "auto": "^10.3.0",
     "babel-jest": "^27.0.6",
