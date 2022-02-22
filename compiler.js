@@ -1,6 +1,6 @@
 const { plugin, postprocess } = require('./dist/cjs');
 
-const compile = async (code) => {
+const compileAsync = async (code, options) => {
   // This async import is needed because these libraries are ESM
   // and this file is CJS. Furthermore, we keep this file out of
   // the src directory so that babel doesn't turn these into `require`
@@ -17,4 +17,4 @@ const compile = async (code) => {
   return processed;
 };
 
-module.exports = { compile };
+module.exports = { compile: compileAsync };

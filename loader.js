@@ -5,6 +5,12 @@ const DEFAULT_RENDERER = `
 import React from 'react';
 `;
 
+// Lifted from MDXv1 loader
+// https://github.com/mdx-js/mdx/blob/v1/packages/loader/index.js
+//
+// Added
+// - webpack5 support
+// - MDX compiler built in
 const loader = async function (content) {
   const callback = this.async();
   // this.getOptions() is webpack5 only
