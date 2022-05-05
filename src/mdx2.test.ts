@@ -59,57 +59,71 @@ describe('mdx2', () => {
     `;
     // @ts-ignore
     expect(compileSync(input)).toMatchInlineSnapshot(`
-/*@jsxRuntime automatic @jsxImportSource react*/
-import { assertIsFn, AddContext } from "@storybook/addon-docs";
-import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-function MDXContent(props = {}) {
-  const {wrapper: MDXLayout} = props.components || ({});
-  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
-    children: _jsx(_createMdxContent, {})
-  })) : _createMdxContent();
-  function _createMdxContent() {
-    const _components = Object.assign({
-      h1: "h1",
-      p: "p"
-    }, props.components), {Meta, Story} = _components;
-    if (!Meta) _missingMdxReference("Meta", true);
-    if (!Story) _missingMdxReference("Story", true);
-    return _jsxs(_Fragment, {
-      children: [_jsx(_components.h1, {
-        children: "hello"
-      }), "\\n", _jsx(Meta, {
-        title: "foobar"
-      }), "\\n", _jsxs(_components.p, {
-        children: ["world ", 2 + 1]
-      }), "\\n", _jsx(Story, {
-        name: "foo",
-        children: "bar"
-      })]
-    });
-  }
-}
-function _missingMdxReference(id, component) {
-  throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
-}
-// =========
-export const foo = () => (
-          "bar"
-        );
-foo.storyName = 'foo';
-foo.parameters = { storySource: { source: '\\"bar\\"' } };
+      /*@jsxRuntime automatic @jsxImportSource react*/
+      import { assertIsFn, AddContext } from "@storybook/addon-docs";
+      import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+      function MDXContent(props = {}) {
+        const {wrapper: MDXLayout} = props.components || ({});
+        return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+          children: _jsx(_createMdxContent, {})
+        })) : _createMdxContent();
+        function _createMdxContent() {
+          const _components = Object.assign({
+            h1: "h1",
+            p: "p"
+          }, props.components), {Meta, Story} = _components;
+          if (!Meta) _missingMdxReference("Meta", true);
+          if (!Story) _missingMdxReference("Story", true);
+          return _jsxs(_Fragment, {
+            children: [_jsx(_components.h1, {
+              children: "hello"
+            }), "\\n", _jsx(Meta, {
+              title: "foobar"
+            }), "\\n", _jsxs(_components.p, {
+              children: ["world ", 2 + 1]
+            }), "\\n", _jsx(Story, {
+              name: "foo",
+              children: "bar"
+            })]
+          });
+        }
+      }
+      function _missingMdxReference(id, component) {
+        throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
+      }
+      // =========
+      export const foo = () => (
+                "bar"
+              );
+      foo.storyName = 'foo';
+      foo.parameters = { storySource: { source: '\\"bar\\"' } };
 
-const componentMeta = { title: 'foobar', includeStories: ["foo"],  };
+      const componentMeta = { title: 'foobar', includeStories: ["foo"],  };
 
-const mdxStoryNameToKey = {"foo":"foo"};
+      const mdxStoryNameToKey = {"foo":"foo"};
 
-componentMeta.parameters = componentMeta.parameters || {};
-componentMeta.parameters.docs = {
-  ...(componentMeta.parameters.docs || {}),
-  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
-};
+      componentMeta.parameters = componentMeta.parameters || {};
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
+      };
 
-export default componentMeta;
-`);
+      export default componentMeta;
+    `);
+  });
+
+  it('standalone jsx expressions', () => {
+    expect(
+      clean(dedent`
+        # Standalone JSX expressions
+
+        {3 + 3}
+      `)
+    ).toMatchInlineSnapshot(`
+      const componentMeta = { includeStories: [] };
+
+      const mdxStoryNameToKey = {};
+    `);
   });
 });
 
