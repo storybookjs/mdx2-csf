@@ -122,6 +122,7 @@ export const postprocess = (code: string, extractedExports: string) => {
     first,
     'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
     ...lines,
+       last,
     SEPARATOR,
     extractedExports,
   ].join('\n');
