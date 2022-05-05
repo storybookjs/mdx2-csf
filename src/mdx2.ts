@@ -115,14 +115,14 @@ export const plugin = (store: any) => (root: any) => {
 
 export const postprocess = (code: string, extractedExports: string) => {
   const lines = code.toString().trim().split('\n');
-  const last = lines.pop();
+
+  // /*@jsxRuntime automatic @jsxImportSource react*/
   const first = lines.shift();
 
   return [
     first,
     'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
-    ...lines,
-       last,
+    ...lines.filter((line) => !line.match(/^export default/)),
     SEPARATOR,
     extractedExports,
   ].join('\n');
