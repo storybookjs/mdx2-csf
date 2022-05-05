@@ -1,3 +1,15 @@
+# v0.0.2 (Thu May 05 2022)
+
+#### 🐛 Bug Fix
+
+- Fix default export postprocessing [#2](https://github.com/storybookjs/mdx2-csf/pull/2) ([@shilman](https://github.com/shilman))
+
+#### Authors: 1
+
+- Michael Shilman ([@shilman](https://github.com/shilman))
+
+---
+
 # v0.0.1 (Thu May 05 2022)
 
 #### 🐛 Bug Fix
