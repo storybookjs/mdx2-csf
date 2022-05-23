@@ -1,10 +1,68 @@
-## @storybook/csf-mdx2
+## @storybook/mdx2-csf
 
-FIXME: Add description of the project
+Storybook's `mdx2-csf` is a compiler that turns MDXv2 input into CSF output.
 
-## Getting Started
+For example, the following input:
 
-FIXME: Add getting started steps
+```mdx
+import { Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="atoms/Button" />
+
+<Story name="Bar">
+  <Button>hello</Button>
+</Story>
+```
+
+Might be transformed into the following CSF (over-simplified):
+
+```js
+export default {
+  title: 'atoms/Button',
+};
+
+export const Bar = () => <Button>hello</Button>;
+```
+
+## API
+
+This library exports an async function to compile MDX, `compile`.
+It does not support a synchronous compiler because it uses asynchronous
+imports to bridge the ESM/CJS gap. The underlying MDXv2 libraries only
+support pure ESM, but this library is used in CJS environments.
+
+### compile
+
+Asynchronously compile a string:
+
+```js
+import { compile } from '@storybook/mdx2-csf';
+
+const code = '# hello\n\nworld';
+const output = await compile(code);
+```
+
+## Loader
+
+In addition, this library supports a simple Webpack loader that mirrors MDXv1's loader, but adds Webpack5 support. It doesn't use MDXv2's loader because it is prohibitively complex, and we want this to be interchangeable with the `@storybook/mdx1-csf`'s loader which is also based on the MDXv1 loader.
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(stories|story)\.mdx$/,
+        use: [
+          {
+            loader: require.resolve('@storybook/mdx2-csf/loader'),
+            options: {},
+          },
+        ],
+      },
+    ],
+  },
+};
+```
 
 ## Contributing
 
