@@ -1,8 +1,8 @@
 const { getOptions } = require('loader-utils');
 const { compile } = require('./compiler');
 
-const DEFAULT_RENDERER = `
-import React from 'react';
+const renderer = (importStr, importSrc) => `
+import ${importStr} from '${importSrc}';
 `;
 
 // Lifted from MDXv1 loader
@@ -18,6 +18,8 @@ const loader = async function (content) {
   const options = Object.assign({}, queryOptions, {
     filepath: this.resourcePath,
   });
+  const importSrc = options.pragmaImportSource || 'react';
+  const importStr = options.pragma ? `{ createElement as ${options.pragma} }` : 'React';
 
   let result;
   try {
@@ -26,7 +28,7 @@ const loader = async function (content) {
     return callback(err);
   }
 
-  const code = `${DEFAULT_RENDERER}\n${result}`;
+  const code = `${renderer(importStr, importSrc)}\n${result}`;
   return callback(null, code);
 };
 
