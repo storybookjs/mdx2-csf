@@ -35,8 +35,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@babel/generator": "^7.12.11",
-    "@babel/parser": "^7.12.11",
+    "@babel/generator": "^7.17.9",
+    "@babel/parser": "^7.17.9",
     "@mdx-js/mdx": "^2.0.0",
     "estree-to-babel": "^4.9.0",
     "hast-util-to-estree": "^2.0.2",
