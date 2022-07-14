@@ -95,7 +95,6 @@ function extractExports(root: t.File, options: CompilerOptions) {
   const fullJsx = [
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,
-    `const mdxStoryNameToKey = ${JSON.stringify(context.storyNameToKey)};`,
     wrapperJs,
     'export default componentMeta;',
   ].join('\n\n');
@@ -121,7 +120,6 @@ export const postprocess = (code: string, extractedExports: string) => {
 
   return [
     first,
-    'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
     ...lines.filter((line) => !line.match(/^export default/)),
     SEPARATOR,
     extractedExports,
