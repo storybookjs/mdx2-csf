@@ -13,6 +13,8 @@ import {
   MetaExport,
   wrapperJs,
   stringifyMeta,
+  hasStoryChild,
+  getMdxSource,
 } from './sb-mdx-plugin';
 
 export const SEPARATOR = '// =========';
@@ -33,6 +35,17 @@ function extractExports(root: t.File, options: CompilerOptions) {
   root.program.body.forEach((child) => {
     if (t.isExpressionStatement(child) && t.isJSXFragment(child.expression)) {
       if (contents) throw new Error('duplicate contents');
+      const canvasEle = child.expression.children.filter(
+        (child: any) =>
+          t.isJSXOpeningElement(child.openingElement) && child.openingElement.name.name === 'Canvas'
+      );
+      if (canvasEle.length) {
+        if (!hasStoryChild(canvasEle[0] as any)) {
+          (canvasEle[0] as any).openingElement.attributes.push(
+            t.jSXAttribute(t.jSXIdentifier('mdxSource'), t.stringLiteral(getMdxSource(canvasEle)))
+          );
+        }
+      }
       contents = child;
     } else if (
       t.isExportNamedDeclaration(child) &&

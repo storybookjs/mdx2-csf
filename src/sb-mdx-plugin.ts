@@ -338,7 +338,7 @@ export function stringifyMeta(meta: object) {
   return result;
 }
 
-const hasStoryChild = (node: t.JSXElement): boolean => {
+export const hasStoryChild = (node: t.JSXElement): boolean => {
   if (
     node.openingElement &&
     t.isJSXIdentifier(node.openingElement.name) &&
@@ -352,7 +352,7 @@ const hasStoryChild = (node: t.JSXElement): boolean => {
   return false;
 };
 
-const getMdxSource = (children: t.Node[]) =>
+export const getMdxSource = (children: t.Node[]) =>
   encodeURI(children.map((el) => generate(el).code).join('\n'));
 
 // Parse out the named exports from a node, where the key
