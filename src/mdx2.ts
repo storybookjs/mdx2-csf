@@ -39,16 +39,16 @@ function extractExports(root: t.File, options: CompilerOptions) {
         (child: any) =>
           t.isJSXOpeningElement(child.openingElement) && child.openingElement.name.name === 'Canvas'
       );
-      if (canvasEle.length) {
-        if (!hasStoryChild(canvasEle[0] as any)) {
-          (canvasEle[0] as any).openingElement.attributes.push(
-            t.jSXAttribute(
-              t.jSXIdentifier('mdxSource'),
-              t.stringLiteral(getMdxSource((canvasEle[0] as any).children))
+      canvasEle.forEach((ele: t.JSXElement) => {
+        if (!hasStoryChild(ele)) {
+          ele.openingElement.attributes.push(
+            t.jsxAttribute(
+              t.jsxIdentifier('mdxSource'),
+              t.stringLiteral(getMdxSource(ele.children))
             )
           );
         }
-      }
+      });
       contents = child;
     } else if (
       t.isExportNamedDeclaration(child) &&
