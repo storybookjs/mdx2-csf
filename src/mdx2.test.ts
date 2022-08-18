@@ -1,6 +1,16 @@
 import { dedent } from 'ts-dedent';
 import prettier from 'prettier';
-import { compileSync, SEPARATOR, wrapperJs } from './mdx2';
+import * as t from '@babel/types';
+import {
+  addMdxSourceAttribute,
+  compileSync,
+  genBabel,
+  getAllCanvasElements,
+  getCanvasWithoutStoryElements,
+  SEPARATOR,
+  wrapperJs,
+} from './mdx2';
+import { getMdxSource, hasStoryChild } from './sb-mdx-plugin';
 
 // @ts-ignore
 expect.addSnapshotSerializer({
@@ -22,6 +32,38 @@ const clean = (mdx: string) => {
       singleQuote: true,
     })
     .trim();
+};
+
+const mockProcess = (root: t.File): t.ExpressionStatement[] => {
+  const statements: t.ExpressionStatement[] = [];
+
+  root.program.body.forEach((statement) => {
+    if (t.isExpressionStatement(statement) && t.isJSXFragment(statement.expression)) {
+      statements.push(statement);
+    }
+  });
+
+  return statements;
+};
+
+const mockPlugin = (store: any) => (root: any) => {
+  const babel = genBabel(store, root);
+
+  store.exports = mockProcess(babel);
+
+  return root;
+};
+
+const mockMdxSync = (mdx: string) => {
+  const { compileSync } = require('@mdx-js/mdx');
+  const { toEstree } = require('hast-util-to-estree');
+
+  const store = { exports: [] as t.ExpressionStatement[], toEstree };
+  compileSync(mdx, {
+    rehypePlugins: [[mockPlugin, store]],
+  });
+
+  return store.exports;
 };
 
 describe('mdx2', () => {
@@ -125,6 +167,85 @@ describe('mdx2', () => {
       const mdxStoryNameToKey = {};
     `);
   });
+
+  it.only('canvas with story children', () => {
+    const input = dedent`
+      import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+      import { Badge } from './Badge';
+      
+      <Meta title="MDX/Badge" component={Badge} />
+      
+      export const Template = (args) => <Badge {...args } />;
+      
+      <Canvas>
+        <Story 
+          name="warning"
+          args={{
+            status: 'warning', 
+            label: 'Warning',
+          }}>
+          {Template.bind({})}
+        </Story>
+        <Story 
+          name="neutral"
+          args={{
+            status: 'neutral', 
+            label: 'Neutral',
+          }}>
+          {Template.bind({})}
+        </Story>
+        <Story 
+          name="error"
+          args={{
+            status: 'error', 
+            label: 'Error',
+          }}>
+          {Template.bind({})}
+        </Story>
+      </Canvas>
+    `;
+
+    const statements = mockMdxSync(input);
+    const canvasElements = getAllCanvasElements(
+      statements[0].expression as unknown as t.JSXFragment
+    );
+    expect(canvasElements.length).toBe(1);
+    // test `hasStoryChild` function.
+    expect(hasStoryChild(canvasElements[0])).toBeTruthy();
+  });
+
+  it.only('canvas without story children', () => {
+    const input = dedent`
+      import { Canvas } from '@storybook/addon-docs';
+
+      import { MyComponent } from './MyComponent';
+      
+      <Canvas>
+        <h2>Some here</h2>
+        <MyComponent />
+      </Canvas>
+    `;
+
+    const statements = mockMdxSync(input);
+    const canvasElements = getAllCanvasElements(
+      statements[0].expression as unknown as t.JSXFragment
+    );
+    expect(canvasElements.length).toBe(1);
+    // test `hasStoryChild` function.
+    expect(hasStoryChild(canvasElements[0])).toBeFalsy();
+
+    expect(getCanvasWithoutStoryElements(canvasElements).length).toBe(1);
+    // test `getMdxSource` function.
+    const canvasWithNoStoryContainers = getCanvasWithoutStoryElements(canvasElements);
+    const encodedMdxSource = getMdxSource(canvasWithNoStoryContainers[0].children);
+    expect(decodeURI(encodedMdxSource)).toMatchInlineSnapshot(
+      dedent`
+        <h2>Some here</h2>
+        <MyComponent />
+      `
+    );
+  });
 });
 
 describe('docs-mdx-compiler-plugin', () => {
@@ -173,12 +294,12 @@ describe('docs-mdx-compiler-plugin', () => {
       clean(dedent`
         import { Button } from '@storybook/react/demo';
         import { Story, Meta } from '@storybook/addon-docs';
-        
+
         <Meta title="Button" component={Button} id="button-id" />
-        
+
         <Story name="component notes">
           <Button>Component notes</Button>
-        </Story>        
+        </Story>
       `)
     ).toMatchInlineSnapshot(`
       export const componentNotes = () => <Button>{'Component notes'}</Button>;
@@ -203,18 +324,18 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Welcome, Button } from '@storybook/angular/demo';
         import * as MyStories from './My.stories';
         import { Other } from './Other.stories';
-        
+
         <Meta title="MDX/CSF imports" />
-        
+
         # Stories from CSF imports
-        
+
         <Story story={MyStories.Basic} />
-        
+
         <Canvas>
           <Story story={Other} />
         </Canvas>
-        
-        <Story name="renamed" story={MyStories.Foo} />      
+
+        <Story name="renamed" story={MyStories.Foo} />
       `)
     ).toMatchInlineSnapshot(`
       export const _Basic_ = MyStories.Basic;
@@ -570,23 +691,23 @@ describe('docs-mdx-compiler-plugin', () => {
       clean(dedent`
         import { Button } from '@storybook/react/demo';
         import { Story, Meta } from '@storybook/addon-docs';
-        
+
         <Meta title="Button" />
-        
+
         # Story definition
-        
+
         <Story name="one">
           <Button>One</Button>
         </Story>
-        
+
         <Story name="hello story">
           <Button>Hello button</Button>
         </Story>
-        
+
         <Story name="w/punctuation">
           <Button>with punctuation</Button>
         </Story>
-        
+
         <Story name="1 fine day">
           <Button>starts with number</Button>
         </Story>
@@ -628,14 +749,14 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Meta, Story } from '@storybook/addon-docs';
 
         <Meta title="story-function-var" />
-        
+
         export const basicFn = () => <Button />;
-        
+
         # Button
-        
+
         I can define a story with the function defined in CSF:
-        
-        <Story name="basic">{basicFn}</Story>      
+
+        <Story name="basic">{basicFn}</Story>
       `)
     ).toMatchInlineSnapshot(`
       export const basic = assertIsFn(basicFn);
@@ -687,9 +808,9 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Story, Meta } from '@storybook/addon-docs';
 
         <Meta title="Multiple" />
-        
+
         # Multiple children
-        
+
         <Story name="multiple children">
           <p>Hello Child #1</p>
           <p>Hello Child #2</p>
@@ -720,11 +841,11 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Story, Meta } from '@storybook/addon-docs';
         import { Welcome, Button } from '@storybook/angular/demo';
         import { linkTo } from '@storybook/addon-links';
-        
+
         <Meta title="MDX|Welcome" />
-        
+
         # Story object
-        
+
         <Story name="to storybook" height="300px">
           {{
             template: '<storybook-welcome-component (showApp)="showApp()"></storybook-welcome-component>',
@@ -831,7 +952,7 @@ describe('docs-mdx-compiler-plugin', () => {
 
         <Story>
           <Button>One</Button>
-        </Story>      
+        </Story>
       `)
     ).rejects.toThrow('Expected a Story name, id, or story attribute');
   });
@@ -841,9 +962,9 @@ describe('docs-mdx-compiler-plugin', () => {
       expect(
         clean(dedent`
           import { Meta } from '@storybook/addon-docs';
-  
+
           <Meta />
-  
+
           # Auto-title Docs Only
 
           Spme **markdown** here!
