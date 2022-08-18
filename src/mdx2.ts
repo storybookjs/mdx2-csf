@@ -43,18 +43,20 @@ function extractExports(root: t.File, options: CompilerOptions) {
             t.isJSXOpeningElement(child.openingElement) &&
             child.openingElement.name.name === 'Canvas'
         )
-        .forEach((canvasContainer: t.JSXElement) => {
-          if (!hasStoryChild(canvasContainer)) {
-            // 2. if there is no `<Story>` child.
-            canvasContainer.openingElement.attributes.push(
-              // 3. then add 'mdxSource' attribute mannually or it's `undefined`.
+        .filter(
+          // 2. find all `<Canvas>` elements that have no `<Story>` children.
+          (canvasContainer: t.JSXElement) => !hasStoryChild(canvasContainer)
+        )
+        .map(
+          // 3. then add 'mdxSource' attribute mannually or it's `undefined`.
+          (canvasWithNoStoryContainer: t.JSXElement) =>
+            canvasWithNoStoryContainer.openingElement.attributes.push(
               t.jsxAttribute(
                 t.jsxIdentifier('mdxSource'),
-                t.stringLiteral(getMdxSource(canvasContainer.children))
+                t.stringLiteral(getMdxSource(canvasWithNoStoryContainer.children))
               )
-            );
-          }
-        });
+            )
+        );
 
       contents = child;
     } else if (
