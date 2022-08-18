@@ -168,7 +168,7 @@ describe('mdx2', () => {
     `);
   });
 
-  it.only('canvas with story children', () => {
+  it('canvas with story children', () => {
     const input = dedent`
       import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
@@ -215,7 +215,7 @@ describe('mdx2', () => {
     expect(hasStoryChild(canvasElements[0])).toBeTruthy();
   });
 
-  it.only('canvas without story children', () => {
+  it('canvas without story children', () => {
     const input = dedent`
       import { Canvas } from '@storybook/addon-docs';
 
@@ -236,10 +236,21 @@ describe('mdx2', () => {
     expect(hasStoryChild(canvasElements[0])).toBeFalsy();
 
     expect(getCanvasWithoutStoryElements(canvasElements).length).toBe(1);
-    // test `getMdxSource` function.
     const canvasWithNoStoryContainers = getCanvasWithoutStoryElements(canvasElements);
-    const encodedMdxSource = getMdxSource(canvasWithNoStoryContainers[0].children);
-    expect(decodeURI(encodedMdxSource)).toMatchInlineSnapshot(
+    // test `addMdxSourceAttribute` function.
+    addMdxSourceAttribute(canvasWithNoStoryContainers);
+    expect(canvasWithNoStoryContainers[0].openingElement.attributes.length).toBe(1);
+    expect(
+      (canvasWithNoStoryContainers[0].openingElement.attributes[0] as t.JSXAttribute).name.name
+    ).toBe('mdxSource');
+    expect(
+      decodeURI(
+        (
+          (canvasWithNoStoryContainers[0].openingElement.attributes[0] as t.JSXAttribute)
+            .value as t.StringLiteral
+        ).value
+      )
+    ).toMatchInlineSnapshot(
       dedent`
         <h2>Some here</h2>
         <MyComponent />
