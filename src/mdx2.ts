@@ -42,7 +42,10 @@ function extractExports(root: t.File, options: CompilerOptions) {
       if (canvasEle.length) {
         if (!hasStoryChild(canvasEle[0] as any)) {
           (canvasEle[0] as any).openingElement.attributes.push(
-            t.jSXAttribute(t.jSXIdentifier('mdxSource'), t.stringLiteral(getMdxSource(canvasEle)))
+            t.jSXAttribute(
+              t.jSXIdentifier('mdxSource'),
+              t.stringLiteral(getMdxSource((canvasEle[0] as any).children))
+            )
           );
         }
       }
