@@ -35,20 +35,27 @@ function extractExports(root: t.File, options: CompilerOptions) {
   root.program.body.forEach((child) => {
     if (t.isExpressionStatement(child) && t.isJSXFragment(child.expression)) {
       if (contents) throw new Error('duplicate contents');
-      const canvasEle = child.expression.children.filter(
-        (child: any) =>
-          t.isJSXOpeningElement(child.openingElement) && child.openingElement.name.name === 'Canvas'
-      );
-      canvasEle.forEach((ele: t.JSXElement) => {
-        if (!hasStoryChild(ele)) {
-          ele.openingElement.attributes.push(
-            t.jsxAttribute(
-              t.jsxIdentifier('mdxSource'),
-              t.stringLiteral(getMdxSource(ele.children))
-            )
-          );
-        }
-      });
+
+      child.expression.children
+        .filter(
+          // 1. find all `<Canvas>` elements.
+          (child: any): child is t.JSXElement =>
+            t.isJSXOpeningElement(child.openingElement) &&
+            child.openingElement.name.name === 'Canvas'
+        )
+        .forEach((canvasContainer: t.JSXElement) => {
+          if (!hasStoryChild(canvasContainer)) {
+            // 2. if there is no `<Story>` child.
+            canvasContainer.openingElement.attributes.push(
+              // 3. then add 'mdxSource' attribute mannually or it's `undefined`.
+              t.jsxAttribute(
+                t.jsxIdentifier('mdxSource'),
+                t.stringLiteral(getMdxSource(canvasContainer.children))
+              )
+            );
+          }
+        });
+
       contents = child;
     } else if (
       t.isExportNamedDeclaration(child) &&
