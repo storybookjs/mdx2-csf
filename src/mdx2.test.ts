@@ -10,7 +10,7 @@ import {
   SEPARATOR,
   wrapperJs,
 } from './mdx2';
-import { getMdxSource, hasStoryChild } from './sb-mdx-plugin';
+import { hasStoryChild } from './sb-mdx-plugin';
 
 // @ts-ignore
 expect.addSnapshotSerializer({
@@ -250,12 +250,10 @@ describe('mdx2', () => {
             .value as t.StringLiteral
         ).value
       )
-    ).toMatchInlineSnapshot(
-      dedent`
-        <h2>Some here</h2>
+    ).toMatchInlineSnapshot(`
+        <h2>{"Some here"}</h2>
         <MyComponent />
-      `
-    );
+      `);
   });
 });
 
