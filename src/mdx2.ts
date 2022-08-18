@@ -21,6 +21,28 @@ export const SEPARATOR = '// =========';
 
 export { wrapperJs };
 
+export function getAllCanvasElements(exp: t.JSXFragment): t.JSXElement[] {
+  return exp.children.filter(
+    (child: any): child is t.JSXElement =>
+      t.isJSXOpeningElement(child.openingElement) && child.openingElement.name.name === 'Canvas'
+  );
+}
+
+export function getCanvasWithoutStoryElements(canvasContainers: t.JSXElement[]): t.JSXElement[] {
+  return canvasContainers.filter((canvasContainer) => !hasStoryChild(canvasContainer));
+}
+
+export function addMdxSourceAttribute(canvasWithNoStoryContainers: t.JSXElement[]): void {
+  canvasWithNoStoryContainers.map((canvasWithNoStoryContainer) =>
+    canvasWithNoStoryContainer.openingElement.attributes.push(
+      t.jsxAttribute(
+        t.jsxIdentifier('mdxSource'),
+        t.stringLiteral(getMdxSource(canvasWithNoStoryContainer.children))
+      )
+    )
+  );
+}
+
 function extractExports(root: t.File, options: CompilerOptions) {
   const context: Context = {
     counter: 0,
@@ -36,27 +58,12 @@ function extractExports(root: t.File, options: CompilerOptions) {
     if (t.isExpressionStatement(child) && t.isJSXFragment(child.expression)) {
       if (contents) throw new Error('duplicate contents');
 
-      child.expression.children
-        .filter(
-          // 1. find all `<Canvas>` elements.
-          (child: any): child is t.JSXElement =>
-            t.isJSXOpeningElement(child.openingElement) &&
-            child.openingElement.name.name === 'Canvas'
-        )
-        .filter(
-          // 2. find all `<Canvas>` elements that have no `<Story>` children.
-          (canvasContainer: t.JSXElement) => !hasStoryChild(canvasContainer)
-        )
-        .map(
-          // 3. then add 'mdxSource' attribute mannually or it's `undefined`.
-          (canvasWithNoStoryContainer: t.JSXElement) =>
-            canvasWithNoStoryContainer.openingElement.attributes.push(
-              t.jsxAttribute(
-                t.jsxIdentifier('mdxSource'),
-                t.stringLiteral(getMdxSource(canvasWithNoStoryContainer.children))
-              )
-            )
-        );
+      // 1. find all `<Canvas>` elements.
+      const canvasElements = getAllCanvasElements(child.expression);
+      // 2. find all `<Canvas>` elements that have no `<Story>` children.
+      const canvasWithNoStoryContainers = getCanvasWithoutStoryElements(canvasElements);
+      // 3. add 'mdxSource' attribute mannually or it's `undefined`.
+      addMdxSourceAttribute(canvasWithNoStoryContainers);
 
       contents = child;
     } else if (
@@ -128,11 +135,17 @@ function extractExports(root: t.File, options: CompilerOptions) {
   return fullJsx;
 }
 
-export const plugin = (store: any) => (root: any) => {
+export function genBabel(store: any, root: any) {
   const estree = store.toEstree(root);
   // toBabel mutates root, so we need to clone it
   const clone = cloneDeep(estree);
   const babel = toBabel(clone);
+
+  return babel;
+}
+
+export const plugin = (store: any) => (root: any) => {
+  const babel = genBabel(store, root);
   store.exports = extractExports(babel, {});
 
   return root;
