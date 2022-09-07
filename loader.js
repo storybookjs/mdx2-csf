@@ -23,6 +23,7 @@ const loader = async function (content) {
   try {
     result = await compile(content, options);
   } catch (err) {
+    console.error('Error loading:', this.resourcePath)
     return callback(err);
   }
 
