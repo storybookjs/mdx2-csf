@@ -314,13 +314,11 @@ export function genMeta(ast: t.JSXElement, options: CompilerOptions) {
   };
 }
 
-// insert `mdxStoryNameToKey` and `mdxComponentMeta` into the context so that we
-// can reconstruct the Story ID dynamically from the `name` at render time
 export const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
-  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
+  page: () => <MDXContent />,
 };
 `.trim();
 
