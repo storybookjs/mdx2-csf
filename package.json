@@ -37,6 +37,7 @@
   "dependencies": {
     "@babel/generator": "^7.12.11",
     "@babel/parser": "^7.12.11",
+    "@babel/types": "^7.14.8",
     "@mdx-js/mdx": "^2.0.0",
     "estree-to-babel": "^4.9.0",
     "hast-util-to-estree": "^2.0.2",
@@ -51,7 +52,6 @@
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.13.0",
     "@babel/template": "^7.14.5",
-    "@babel/types": "^7.14.8",
     "@jest/types": "^27.0.6",
     "@storybook/addon-actions": "^6.5.0-alpha.36",
     "@storybook/addon-essentials": "^6.5.0-alpha.36",
