@@ -100,7 +100,7 @@ describe('mdx2', () => {
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = {
         ...(componentMeta.parameters.docs || {}),
-        page: () => <MDXContent />,
+        page: () => _jsx(MDXContent, {}),
       };
 
       export default componentMeta;
