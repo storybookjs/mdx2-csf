@@ -318,7 +318,7 @@ export const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
-  page: () => <MDXContent />,
+  page: MDXContent,
 };
 `.trim();
 
