@@ -1,5 +1,5 @@
 const { getOptions } = require('loader-utils');
-const { compile } = require('./compiler');
+const { compile } = require('./dist/index');
 
 const DEFAULT_RENDERER = `
 import React from 'react';
