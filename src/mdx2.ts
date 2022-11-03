@@ -2,6 +2,8 @@ import generate from '@babel/generator';
 import * as t from '@babel/types';
 import cloneDeep from 'lodash/cloneDeep';
 import toBabel from 'estree-to-babel';
+import { compileSync } from '@mdx-js/mdx';
+import { toEstree } from 'hast-util-to-estree';
 
 // Keeping as much code as possible from the original compiler to avoid breaking changes
 import {
@@ -127,9 +129,6 @@ export const postprocess = (code: string, extractedExports: string) => {
 };
 
 export const mdxSync = (code: string) => {
-  const { compileSync } = require('@mdx-js/mdx');
-  const { toEstree } = require('hast-util-to-estree');
-
   const store = { exports: '', toEstree };
   const output = compileSync(code, {
     rehypePlugins: [[plugin, store]],
