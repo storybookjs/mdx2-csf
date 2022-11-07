@@ -21,6 +21,16 @@ export const SEPARATOR = '// =========';
 
 export { wrapperJs };
 
+const hasStoryChild = (node: any) => {
+  return node.children?.length > 0 && node.children.find((c: any) => c.name === 'Story');
+};
+
+const generateMdxSource = (canvas: any) => {
+  const babel = toBabel(cloneDeep(toEstree(canvas)));
+  const { code } = generate(babel, {});
+  return code.replace(/<\/?Canvas[^>]*>;?/g, '');
+};
+
 function extractExports(root: t.File, options: CompilerOptions) {
   const context: Context = {
     counter: 0,
@@ -104,12 +114,29 @@ function extractExports(root: t.File, options: CompilerOptions) {
   return fullJsx;
 }
 
-export const plugin = (store: any) => (root: any) => {
+export const genBabel = (store: any, root: any) => {
   const estree = store.toEstree(root);
   // toBabel mutates root, so we need to clone it
   const clone = cloneDeep(estree);
   const babel = toBabel(clone);
+  return babel;
+};
+
+export const plugin = (store: any) => (root: any) => {
+  const babel = genBabel(store, root);
   store.exports = extractExports(babel, {});
+
+  // insert mdxSource attributes for canvas elements
+  root.children.forEach((node: any) => {
+    if (node.type === 'mdxJsxFlowElement' && node.name === 'Canvas') {
+      if (!hasStoryChild(node)) {
+        node.attributes = [
+          ...(node.attributes || []),
+          { type: 'mdxJsxAttribute', name: 'mdxSource', value: generateMdxSource(node) },
+        ];
+      }
+    }
+  });
 
   return root;
 };

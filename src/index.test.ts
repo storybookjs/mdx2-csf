@@ -1,6 +1,7 @@
 import { dedent } from 'ts-dedent';
 import prettier from 'prettier';
-import { compileSync, compile, SEPARATOR, wrapperJs } from './index';
+import * as t from '@babel/types';
+import { compileSync, compile, genBabel, SEPARATOR, wrapperJs } from './index';
 
 // @ts-ignore
 expect.addSnapshotSerializer({
@@ -22,6 +23,38 @@ const clean = (mdx: string) => {
       singleQuote: true,
     })
     .trim();
+};
+
+const mockProcess = (root: t.File): t.ExpressionStatement[] => {
+  const statements: t.ExpressionStatement[] = [];
+
+  root.program.body.forEach((statement) => {
+    if (t.isExpressionStatement(statement) && t.isJSXFragment(statement.expression)) {
+      statements.push(statement);
+    }
+  });
+
+  return statements;
+};
+
+const mockPlugin = (store: any) => (root: any) => {
+  const babel = genBabel(store, root);
+
+  store.exports = mockProcess(babel);
+
+  return root;
+};
+
+const mockMdxSync = (mdx: string) => {
+  const { compileSync } = require('@mdx-js/mdx');
+  const { toEstree } = require('hast-util-to-estree');
+
+  const store = { exports: [] as t.ExpressionStatement[], toEstree };
+  compileSync(mdx, {
+    rehypePlugins: [[mockPlugin, store]],
+  });
+
+  return store.exports;
 };
 
 describe('mdx2', () => {
@@ -69,54 +102,54 @@ describe('full snapshots', () => {
     `;
     // @ts-ignore
     expect(compileSync(input)).toMatchInlineSnapshot(`
-      /*@jsxRuntime automatic @jsxImportSource react*/
-      import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-      function MDXContent(props = {}) {
-        const {wrapper: MDXLayout} = props.components || ({});
-        return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
-          children: _jsx(_createMdxContent, {})
-        })) : _createMdxContent();
-        function _createMdxContent() {
-          const _components = Object.assign({
-            h1: "h1",
-            p: "p"
-          }, props.components), {Meta, Story} = _components;
-          if (!Meta) _missingMdxReference("Meta", true);
-          if (!Story) _missingMdxReference("Story", true);
-          return _jsxs(_Fragment, {
-            children: [_jsx(_components.h1, {
-              children: "hello"
-            }), "\\n", _jsx(Meta, {
-              title: "foobar"
-            }), "\\n", _jsxs(_components.p, {
-              children: ["world ", 2 + 1]
-            }), "\\n", _jsx(Story, {
-              name: "foo",
-              children: "bar"
-            })]
-          });
-        }
-      }
-      function _missingMdxReference(id, component) {
-        throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
-      }
-      // =========
-      export const foo = () => (
-                "bar"
-              );
-      foo.storyName = 'foo';
-      foo.parameters = { storySource: { source: '\\"bar\\"' } };
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, {})
+  })) : _createMdxContent();
+  function _createMdxContent() {
+    const _components = Object.assign({
+      h1: "h1",
+      p: "p"
+    }, props.components), {Meta, Story} = _components;
+    if (!Meta) _missingMdxReference("Meta", true);
+    if (!Story) _missingMdxReference("Story", true);
+    return _jsxs(_Fragment, {
+      children: [_jsx(_components.h1, {
+        children: "hello"
+      }), "\\n", _jsx(Meta, {
+        title: "foobar"
+      }), "\\n", _jsxs(_components.p, {
+        children: ["world ", 2 + 1]
+      }), "\\n", _jsx(Story, {
+        name: "foo",
+        children: "bar"
+      })]
+    });
+  }
+}
+function _missingMdxReference(id, component) {
+  throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
+}
+// =========
+export const foo = () => (
+          "bar"
+        );
+foo.storyName = 'foo';
+foo.parameters = { storySource: { source: '\\"bar\\"' } };
 
-      const componentMeta = { title: 'foobar', tags: ['mdx'], includeStories: ["foo"],  };
+const componentMeta = { title: 'foobar', tags: ['mdx'], includeStories: ["foo"],  };
 
-      componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = {
-        ...(componentMeta.parameters.docs || {}),
-        page: MDXContent,
-      };
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
 
-      export default componentMeta;
-    `);
+export default componentMeta;
+`);
   });
   it('compile', async () => {
     const input = dedent`
@@ -180,6 +213,100 @@ componentMeta.parameters.docs = {
 export default componentMeta;
 `);
   });
+
+  it('canvas with story', () => {
+    const input = dedent`
+      import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+      <Meta title="MDX/Badge" />
+
+      <Canvas>
+        <Story name="foo">
+          <div>I'm a story</div>
+        </Story>
+      </Canvas>
+    `;
+    expect(compileSync(input)).toMatchInlineSnapshot(`
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {Canvas, Meta, Story} from '@storybook/addon-docs';
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, {})
+  })) : _createMdxContent();
+  function _createMdxContent() {
+    return _jsxs(_Fragment, {
+      children: [_jsx(Meta, {
+        title: "MDX/Badge"
+      }), "\\n", _jsx(Canvas, {
+        children: _jsx(Story, {
+          name: "foo",
+          children: _jsx("div", {
+            children: "I'm a story"
+          })
+        })
+      })]
+    });
+  }
+}
+// =========
+export const foo = () => (
+          <div>{"I'm a story"}</div>
+        );
+foo.storyName = 'foo';
+foo.parameters = { storySource: { source: '<div>{\\"I\\'m a story\\"}</div>' } };
+
+const componentMeta = { title: 'MDX/Badge', tags: ['mdx'], includeStories: ["foo"],  };
+
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
+
+export default componentMeta;
+`);
+  });
+
+  it('canvas without story children', () => {
+    const input = dedent`
+      import { Canvas } from '@storybook/addon-docs';
+
+      <Canvas>
+        <h2>Some here</h2>
+      </Canvas>
+    `;
+    expect(compileSync(input)).toMatchInlineSnapshot(`
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {jsx as _jsx} from "react/jsx-runtime";
+import {Canvas} from '@storybook/addon-docs';
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, {})
+  })) : _createMdxContent();
+  function _createMdxContent() {
+    return _jsx(Canvas, {
+      mdxSource: "<h2>{\\"Some here\\"}</h2>",
+      children: _jsx("h2", {
+        children: "Some here"
+      })
+    });
+  }
+}
+// =========
+const componentMeta = { includeStories: [],  };
+
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
+
+export default componentMeta;
+`);
+  });
 });
 
 describe('docs-mdx-compiler-plugin', () => {
@@ -227,12 +354,12 @@ describe('docs-mdx-compiler-plugin', () => {
       clean(dedent`
         import { Button } from '@storybook/react/demo';
         import { Story, Meta } from '@storybook/addon-docs';
-        
+
         <Meta title="Button" component={Button} id="button-id" />
-        
+
         <Story name="component notes">
           <Button>Component notes</Button>
-        </Story>        
+        </Story>
       `)
     ).toMatchInlineSnapshot(`
       export const componentNotes = () => <Button>{'Component notes'}</Button>;
@@ -256,18 +383,18 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Welcome, Button } from '@storybook/angular/demo';
         import * as MyStories from './My.stories';
         import { Other } from './Other.stories';
-        
+
         <Meta title="MDX/CSF imports" />
-        
+
         # Stories from CSF imports
-        
+
         <Story story={MyStories.Basic} />
-        
+
         <Canvas>
           <Story story={Other} />
         </Canvas>
-        
-        <Story name="renamed" story={MyStories.Foo} />      
+
+        <Story name="renamed" story={MyStories.Foo} />
       `)
     ).toMatchInlineSnapshot(`
       export const _Basic_ = MyStories.Basic;
@@ -611,23 +738,23 @@ describe('docs-mdx-compiler-plugin', () => {
       clean(dedent`
         import { Button } from '@storybook/react/demo';
         import { Story, Meta } from '@storybook/addon-docs';
-        
+
         <Meta title="Button" />
-        
+
         # Story definition
-        
+
         <Story name="one">
           <Button>One</Button>
         </Story>
-        
+
         <Story name="hello story">
           <Button>Hello button</Button>
         </Story>
-        
+
         <Story name="w/punctuation">
           <Button>with punctuation</Button>
         </Story>
-        
+
         <Story name="1 fine day">
           <Button>starts with number</Button>
         </Story>
@@ -663,14 +790,14 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Meta, Story } from '@storybook/addon-docs';
 
         <Meta title="story-function-var" />
-        
+
         export const basicFn = () => <Button />;
-        
+
         # Button
-        
+
         I can define a story with the function defined in CSF:
-        
-        <Story name="basic">{basicFn}</Story>      
+
+        <Story name="basic">{basicFn}</Story>
       `)
     ).toMatchInlineSnapshot(`
       export const basic = assertIsFn(basicFn);
@@ -718,9 +845,9 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Story, Meta } from '@storybook/addon-docs';
 
         <Meta title="Multiple" />
-        
+
         # Multiple children
-        
+
         <Story name="multiple children">
           <p>Hello Child #1</p>
           <p>Hello Child #2</p>
@@ -749,11 +876,11 @@ describe('docs-mdx-compiler-plugin', () => {
         import { Story, Meta } from '@storybook/addon-docs';
         import { Welcome, Button } from '@storybook/angular/demo';
         import { linkTo } from '@storybook/addon-links';
-        
+
         <Meta title="MDX|Welcome" />
-        
+
         # Story object
-        
+
         <Story name="to storybook" height="300px">
           {{
             template: '<storybook-welcome-component (showApp)="showApp()"></storybook-welcome-component>',
@@ -852,7 +979,7 @@ describe('docs-mdx-compiler-plugin', () => {
 
         <Story>
           <Button>One</Button>
-        </Story>      
+        </Story>
       `)
     ).rejects.toThrow('Expected a Story name, id, or story attribute');
   });
@@ -862,9 +989,9 @@ describe('docs-mdx-compiler-plugin', () => {
       expect(
         clean(dedent`
           import { Meta } from '@storybook/addon-docs';
-  
+
           <Meta />
-  
+
           # Auto-title Docs Only
 
           Spme **markdown** here!
