@@ -1,6 +1,6 @@
 module.exports = {
   stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', { name: '@storybook/addon-essentials' }],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: '@storybook/react-webpack5',
   webpackFinal: async (config) => {
     const rules = (config.module.rules || []).filter(
@@ -10,7 +10,6 @@ module.exports = {
       // 2a. Load `.stories.mdx` / `.story.mdx` files as CSF and generate
       //     the docs page from the markdown
       test: /\.(stories|story)\.mdx$/,
-
       use: [
         {
           // Need to add babel-loader as dependency: `yarn add -D babel-loader`
