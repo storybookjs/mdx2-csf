@@ -1,17 +1,7 @@
 import { dedent } from 'ts-dedent';
 import prettier from 'prettier';
 import * as t from '@babel/types';
-import {
-  addMdxSourceAttribute,
-  compileSync,
-  compile,
-  genBabel,
-  getAllCanvasElements,
-  getCanvasWithoutStoryElements,
-  SEPARATOR,
-  wrapperJs,
-} from './index';
-import { hasStoryChild } from './sb-mdx-plugin';
+import { compileSync, compile, genBabel, SEPARATOR, wrapperJs } from './index';
 
 // @ts-ignore
 expect.addSnapshotSerializer({
@@ -112,54 +102,54 @@ describe('full snapshots', () => {
     `;
     // @ts-ignore
     expect(compileSync(input)).toMatchInlineSnapshot(`
-      /*@jsxRuntime automatic @jsxImportSource react*/
-      import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-      function MDXContent(props = {}) {
-        const {wrapper: MDXLayout} = props.components || ({});
-        return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
-          children: _jsx(_createMdxContent, {})
-        })) : _createMdxContent();
-        function _createMdxContent() {
-          const _components = Object.assign({
-            h1: "h1",
-            p: "p"
-          }, props.components), {Meta, Story} = _components;
-          if (!Meta) _missingMdxReference("Meta", true);
-          if (!Story) _missingMdxReference("Story", true);
-          return _jsxs(_Fragment, {
-            children: [_jsx(_components.h1, {
-              children: "hello"
-            }), "\\n", _jsx(Meta, {
-              title: "foobar"
-            }), "\\n", _jsxs(_components.p, {
-              children: ["world ", 2 + 1]
-            }), "\\n", _jsx(Story, {
-              name: "foo",
-              children: "bar"
-            })]
-          });
-        }
-      }
-      function _missingMdxReference(id, component) {
-        throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
-      }
-      // =========
-      export const foo = () => (
-                "bar"
-              );
-      foo.storyName = 'foo';
-      foo.parameters = { storySource: { source: '\\"bar\\"' } };
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+function _createMdxContent(props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p"
+  }, props.components), {Meta, Story} = _components;
+  if (!Meta) _missingMdxReference("Meta", true);
+  if (!Story) _missingMdxReference("Story", true);
+  return _jsxs(_Fragment, {
+    children: [_jsx(_components.h1, {
+      children: "hello"
+    }), "\\n", _jsx(Meta, {
+      title: "foobar"
+    }), "\\n", _jsxs(_components.p, {
+      children: ["world ", 2 + 1]
+    }), "\\n", _jsx(Story, {
+      name: "foo",
+      children: "bar"
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, props)
+  })) : _createMdxContent(props);
+}
+function _missingMdxReference(id, component) {
+  throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
+}
+// =========
+export const foo = () => (
+          "bar"
+        );
+foo.storyName = 'foo';
+foo.parameters = { storySource: { source: '\\"bar\\"' } };
 
-      const componentMeta = { title: 'foobar', tags: ['mdx'], includeStories: ["foo"],  };
+const componentMeta = { title: 'foobar', tags: ['mdx'], includeStories: ["foo"],  };
 
-      componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = {
-        ...(componentMeta.parameters.docs || {}),
-        page: MDXContent,
-      };
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
 
-      export default componentMeta;
-    `);
+export default componentMeta;
+`);
   });
   it('compile', async () => {
     const input = dedent`
@@ -176,31 +166,31 @@ describe('full snapshots', () => {
 /*@jsxRuntime automatic @jsxImportSource react*/
 import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
 import {useMDXComponents as _provideComponents} from "@mdx-js/react";
+function _createMdxContent(props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p"
+  }, _provideComponents(), props.components), {Meta, Story} = _components;
+  if (!Meta) _missingMdxReference("Meta", true);
+  if (!Story) _missingMdxReference("Story", true);
+  return _jsxs(_Fragment, {
+    children: [_jsx(_components.h1, {
+      children: "hello"
+    }), "\\n", _jsx(Meta, {
+      title: "foobar"
+    }), "\\n", _jsxs(_components.p, {
+      children: ["world ", 2 + 1]
+    }), "\\n", _jsx(Story, {
+      name: "foo",
+      children: "bar"
+    })]
+  });
+}
 function MDXContent(props = {}) {
   const {wrapper: MDXLayout} = Object.assign({}, _provideComponents(), props.components);
   return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
-    children: _jsx(_createMdxContent, {})
-  })) : _createMdxContent();
-  function _createMdxContent() {
-    const _components = Object.assign({
-      h1: "h1",
-      p: "p"
-    }, _provideComponents(), props.components), {Meta, Story} = _components;
-    if (!Meta) _missingMdxReference("Meta", true);
-    if (!Story) _missingMdxReference("Story", true);
-    return _jsxs(_Fragment, {
-      children: [_jsx(_components.h1, {
-        children: "hello"
-      }), "\\n", _jsx(Meta, {
-        title: "foobar"
-      }), "\\n", _jsxs(_components.p, {
-        children: ["world ", 2 + 1]
-      }), "\\n", _jsx(Story, {
-        name: "foo",
-        children: "bar"
-      })]
-    });
-  }
+    children: _jsx(_createMdxContent, props)
+  })) : _createMdxContent(props);
 }
 function _missingMdxReference(id, component) {
   throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
@@ -224,92 +214,98 @@ export default componentMeta;
 `);
   });
 
-  it('canvas with story children', () => {
+  it('canvas with story', () => {
     const input = dedent`
       import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
-      import { Badge } from './Badge';
-      
-      <Meta title="MDX/Badge" component={Badge} />
-      
-      export const Template = (args) => <Badge {...args } />;
-      
+      <Meta title="MDX/Badge" />
+
       <Canvas>
-        <Story 
-          name="warning"
-          args={{
-            status: 'warning', 
-            label: 'Warning',
-          }}>
-          {Template.bind({})}
-        </Story>
-        <Story 
-          name="neutral"
-          args={{
-            status: 'neutral', 
-            label: 'Neutral',
-          }}>
-          {Template.bind({})}
-        </Story>
-        <Story 
-          name="error"
-          args={{
-            status: 'error', 
-            label: 'Error',
-          }}>
-          {Template.bind({})}
+        <Story name="foo">
+          <div>I'm a story</div>
         </Story>
       </Canvas>
     `;
+    expect(compileSync(input)).toMatchInlineSnapshot(`
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+import {Canvas, Meta, Story} from '@storybook/addon-docs';
+function _createMdxContent(props) {
+  return _jsxs(_Fragment, {
+    children: [_jsx(Meta, {
+      title: "MDX/Badge"
+    }), "\\n", _jsx(Canvas, {
+      children: _jsx(Story, {
+        name: "foo",
+        children: _jsx("div", {
+          children: "I'm a story"
+        })
+      })
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, props)
+  })) : _createMdxContent(props);
+}
+// =========
+export const foo = () => (
+          <div>{"I'm a story"}</div>
+        );
+foo.storyName = 'foo';
+foo.parameters = { storySource: { source: '<div>{\\"I\\'m a story\\"}</div>' } };
 
-    const statements = mockMdxSync(input);
-    const canvasElements = getAllCanvasElements(
-      statements[0].expression as unknown as t.JSXFragment
-    );
-    expect(canvasElements.length).toBe(1);
-    // test `hasStoryChild` function.
-    expect(hasStoryChild(canvasElements[0])).toBeTruthy();
+const componentMeta = { title: 'MDX/Badge', tags: ['mdx'], includeStories: ["foo"],  };
+
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
+
+export default componentMeta;
+`);
   });
 
   it('canvas without story children', () => {
     const input = dedent`
       import { Canvas } from '@storybook/addon-docs';
 
-      import { MyComponent } from './MyComponent';
-      
       <Canvas>
         <h2>Some here</h2>
-        <MyComponent />
       </Canvas>
     `;
+    expect(compileSync(input)).toMatchInlineSnapshot(`
+/*@jsxRuntime automatic @jsxImportSource react*/
+import {jsx as _jsx} from "react/jsx-runtime";
+import {Canvas} from '@storybook/addon-docs';
+function _createMdxContent(props) {
+  return _jsx(Canvas, {
+    mdxSource: "<h2>{\\"Some here\\"}</h2>",
+    children: _jsx("h2", {
+      children: "Some here"
+    })
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, props)
+  })) : _createMdxContent(props);
+}
+// =========
+const componentMeta = { includeStories: [],  };
 
-    const statements = mockMdxSync(input);
-    const canvasElements = getAllCanvasElements(
-      statements[0].expression as unknown as t.JSXFragment
-    );
-    expect(canvasElements.length).toBe(1);
-    // test `hasStoryChild` function.
-    expect(hasStoryChild(canvasElements[0])).toBeFalsy();
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent,
+};
 
-    expect(getCanvasWithoutStoryElements(canvasElements).length).toBe(1);
-    const canvasWithNoStoryContainers = getCanvasWithoutStoryElements(canvasElements);
-    // test `addMdxSourceAttribute` function.
-    addMdxSourceAttribute(canvasWithNoStoryContainers);
-    expect(canvasWithNoStoryContainers[0].openingElement.attributes.length).toBe(1);
-    expect(
-      (canvasWithNoStoryContainers[0].openingElement.attributes[0] as t.JSXAttribute).name.name
-    ).toBe('mdxSource');
-    expect(
-      decodeURI(
-        (
-          (canvasWithNoStoryContainers[0].openingElement.attributes[0] as t.JSXAttribute)
-            .value as t.StringLiteral
-        ).value
-      )
-    ).toMatchInlineSnapshot(`
-        <h2>{"Some here"}</h2>
-        <MyComponent />
-      `);
+export default componentMeta;
+`);
   });
 });
 

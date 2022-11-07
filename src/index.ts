@@ -15,35 +15,21 @@ import {
   MetaExport,
   wrapperJs,
   stringifyMeta,
-  hasStoryChild,
-  getMdxSource,
 } from './sb-mdx-plugin';
 
 export const SEPARATOR = '// =========';
 
 export { wrapperJs };
 
-export function getAllCanvasElements(exp: t.JSXFragment): t.JSXElement[] {
-  return exp.children.filter(
-    (child: any): child is t.JSXElement =>
-      t.isJSXOpeningElement(child.openingElement) && child.openingElement.name.name === 'Canvas'
-  );
-}
+const hasStoryChild = (node: any) => {
+  return node.children?.length > 0 && node.children.find((c: any) => c.name === 'Story');
+};
 
-export function getCanvasWithoutStoryElements(canvasContainers: t.JSXElement[]): t.JSXElement[] {
-  return canvasContainers.filter((canvasContainer) => !hasStoryChild(canvasContainer));
-}
-
-export function addMdxSourceAttribute(canvasWithNoStoryContainers: t.JSXElement[]): void {
-  canvasWithNoStoryContainers.map((canvasWithNoStoryContainer) =>
-    canvasWithNoStoryContainer.openingElement.attributes.push(
-      t.jsxAttribute(
-        t.jsxIdentifier('mdxSource'),
-        t.stringLiteral(getMdxSource(canvasWithNoStoryContainer.children))
-      )
-    )
-  );
-}
+const generateMdxSource = (canvas: any) => {
+  const babel = toBabel(cloneDeep(toEstree(canvas)));
+  const { code } = generate(babel, {});
+  return code.replace(/<\/?Canvas[^>]*>;?/g, '');
+};
 
 function extractExports(root: t.File, options: CompilerOptions) {
   const context: Context = {
@@ -59,14 +45,6 @@ function extractExports(root: t.File, options: CompilerOptions) {
   root.program.body.forEach((child) => {
     if (t.isExpressionStatement(child) && t.isJSXFragment(child.expression)) {
       if (contents) throw new Error('duplicate contents');
-
-      // 1. find all `<Canvas>` elements.
-      const canvasElements = getAllCanvasElements(child.expression);
-      // 2. find all `<Canvas>` elements that have no `<Story>` children.
-      const canvasWithNoStoryContainers = getCanvasWithoutStoryElements(canvasElements);
-      // 3. add 'mdxSource' attribute mannually or it's `undefined`.
-      addMdxSourceAttribute(canvasWithNoStoryContainers);
-
       contents = child;
     } else if (
       t.isExportNamedDeclaration(child) &&
@@ -147,6 +125,18 @@ export const genBabel = (store: any, root: any) => {
 export const plugin = (store: any) => (root: any) => {
   const babel = genBabel(store, root);
   store.exports = extractExports(babel, {});
+
+  // insert mdxSource attributes for canvas elements
+  root.children.forEach((node: any) => {
+    if (node.type === 'mdxJsxFlowElement' && node.name === 'Canvas') {
+      if (!hasStoryChild(node)) {
+        node.attributes = [
+          ...(node.attributes || []),
+          { type: 'mdxJsxAttribute', name: 'mdxSource', value: generateMdxSource(node) },
+        ];
+      }
+    }
+  });
 
   return root;
 };
