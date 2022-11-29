@@ -165,11 +165,20 @@ export const mdxSync = (code: string) => {
 
 export { mdxSync as compileSync };
 
-export const compile = async (code: string, { skipCsf }: { skipCsf?: boolean } = {}) => {
+interface CompileOptions {
+  skipCsf?: boolean;
+  mdxCompileOptions?: Parameters<typeof mdxCompile>[1];
+}
+
+export const compile = async (
+  code: string,
+  { skipCsf, mdxCompileOptions }: CompileOptions = {}
+) => {
   const store = { exports: '', toEstree };
   const output = await mdxCompile(code, {
-    rehypePlugins: skipCsf ? [] : [[plugin, store]],
     providerImportSource: '@mdx-js/react',
+    rehypePlugins: skipCsf ? [] : [[plugin, store]],
+    ...mdxCompileOptions,
   });
   return skipCsf ? output.toString() : postprocess(output.toString(), store.exports);
 };
