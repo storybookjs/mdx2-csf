@@ -1,10 +1,6 @@
 const { getOptions } = require('loader-utils');
 const { compile } = require('./dist/index');
 
-const DEFAULT_RENDERER = `
-import React from 'react';
-`;
-
 // Lifted from MDXv1 loader
 // https://github.com/mdx-js/mdx/blob/v1/packages/loader/index.js
 //
@@ -26,8 +22,7 @@ const loader = async function (content) {
     return callback(err);
   }
 
-  const code = `${DEFAULT_RENDERER}\n${result}`;
-  return callback(null, code);
+  return callback(null, result);
 };
 
 module.exports = loader;
