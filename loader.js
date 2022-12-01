@@ -1,6 +1,14 @@
 const { getOptions } = require('loader-utils');
 const { compile } = require('./dist/index');
 
+// FIXME: we shouldn't be doing this, but we need it
+// for react MDX story definitions, e.g.
+//
+// <Story name="foo"><div>hi></div></Story>
+//
+// Which generates the code:
+//
+// export const foo = () => <div>hi</div>;
 const DEFAULT_RENDERER = `
 import React from 'react';
 `;

@@ -46,7 +46,16 @@ const output = await compile(code);
 
 In addition, this library supports a simple Webpack loader that mirrors MDXv1's loader, but adds Webpack5 support. It doesn't use MDXv2's loader because it is prohibitively complex, and we want this to be interchangeable with the `@storybook/mdx1-csf`'s loader which is also based on the MDXv1 loader.
 
+The loader takes two options:
+
+- `skipCsf` don't generate CSF stories for the MDX file
+- `mdxCompileOptions` full options for the [MDX compile function](https://mdxjs.com/packages/mdx/#api)
+
+For example, to add [GFM support](https://mdxjs.com/guides/gfm/):
+
 ```js
+import remarkGfm from 'remark-gfm';
+
 module.exports = {
   module: {
     rules: [
@@ -55,7 +64,12 @@ module.exports = {
         use: [
           {
             loader: require.resolve('@storybook/mdx2-csf/loader'),
-            options: {},
+            options: {
+              skipCsf: false,
+              mdxCompileOptions: {
+                remarkPlugins: [remarkGfm],
+              },
+            },
           },
         ],
       },
