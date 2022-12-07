@@ -165,7 +165,7 @@ export const mdxSync = (code: string) => {
 
 export { mdxSync as compileSync };
 
-interface CompileOptions {
+export interface CompileOptions {
   skipCsf?: boolean;
   mdxCompileOptions?: Parameters<typeof mdxCompile>[1];
 }
