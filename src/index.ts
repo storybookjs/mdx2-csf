@@ -1,4 +1,4 @@
-import { compile as mdxCompile, compileSync } from '@mdx-js/mdx';
+import { compile as mdxCompile, compileSync as mdxCompileSync } from '@mdx-js/mdx';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import cloneDeep from 'lodash/cloneDeep';
@@ -16,8 +16,10 @@ import {
   wrapperJs,
   stringifyMeta,
 } from './sb-mdx-plugin';
+import { CompileOptions, MdxCompileOptions } from './types';
+import { transformJSXAsync, transformJSXSync } from './jsx';
 
-export const SEPARATOR = '// =========';
+export const SEPARATOR = '/* ========= */';
 
 export { wrapperJs };
 
@@ -40,7 +42,7 @@ function extractExports(root: t.File, options: CompilerOptions) {
   const storyExports = [];
   const includeStories = [];
   let metaExport: MetaExport | null = null;
-  const { code } = generate(root, {});
+
   let contents: t.ExpressionStatement;
   root.program.body.forEach((child) => {
     if (t.isExpressionStatement(child) && t.isJSXFragment(child.expression)) {
@@ -148,37 +150,72 @@ export const postprocess = (code: string, extractedExports: string) => {
   const first = lines.shift();
 
   return [
-    first,
     ...lines.filter((line) => !line.match(/^export default/)),
     SEPARATOR,
     extractedExports,
   ].join('\n');
 };
 
-export const mdxSync = (code: string) => {
-  const store = { exports: '', toEstree };
-  const output = compileSync(code, {
-    rehypePlugins: [[plugin, store]],
-  });
-  return postprocess(output.toString(), store.exports);
-};
-
-export { mdxSync as compileSync };
-
-export interface CompileOptions {
-  skipCsf?: boolean;
-  mdxCompileOptions?: Parameters<typeof mdxCompile>[1];
-}
-
 export const compile = async (
-  code: string,
-  { skipCsf, mdxCompileOptions }: CompileOptions = {}
+  input: string,
+  { skipCsf = false, mdxCompileOptions = {}, jsxOptions = {} }: CompileOptions = {}
 ) => {
-  const store = { exports: '', toEstree };
-  const output = await mdxCompile(code, {
-    providerImportSource: '@mdx-js/react',
-    rehypePlugins: skipCsf ? [] : [[plugin, store]],
-    ...mdxCompileOptions,
-  });
-  return skipCsf ? output.toString() : postprocess(output.toString(), store.exports);
+  const { options, context } = getCompilerOptionsAndContext(mdxCompileOptions, skipCsf);
+
+  if (skipCsf) {
+    const mdxResult = await mdxCompile(input, options);
+
+    return mdxResult.toString();
+  }
+
+  const mdxResult = await mdxCompile(input, options);
+
+  return transformJSXAsync(postprocess(mdxResult.toString(), context.exports), jsxOptions);
 };
+
+export const compileSync = (
+  input: string,
+  { skipCsf = false, mdxCompileOptions = {}, jsxOptions = {} }: CompileOptions = {}
+) => {
+  const { options, context } = getCompilerOptionsAndContext(mdxCompileOptions, skipCsf);
+
+  if (skipCsf) {
+    const mdxResult = mdxCompileSync(input, options);
+
+    return mdxResult.toString();
+  }
+
+  const mdxResult = mdxCompileSync(input, options);
+
+  return transformJSXSync(postprocess(mdxResult.toString(), context.exports), jsxOptions);
+};
+
+function getCompilerOptionsAndContext(
+  mdxCompileOptions: MdxCompileOptions,
+  skipCsf: boolean = false
+): { options: MdxCompileOptions; context: any } {
+  if (skipCsf) {
+    return {
+      options: {
+        providerImportSource: '@mdx-js/react',
+        rehypePlugins: [],
+        ...mdxCompileOptions,
+      },
+      context: {},
+    };
+  }
+
+  const context = { exports: '', toEstree };
+
+  return {
+    options: {
+      providerImportSource: '@mdx-js/react',
+      rehypePlugins: [[plugin, context]],
+      ...mdxCompileOptions,
+
+      // preserve the JSX, we'll deal with it using babel
+      jsx: true,
+    },
+    context,
+  };
+}
