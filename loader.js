@@ -1,4 +1,3 @@
-const { getOptions } = require('loader-utils');
 const { compile } = require('./dist/index');
 
 // FIXME: we shouldn't be doing this, but we need it
@@ -21,9 +20,7 @@ import React from 'react';
 // - MDX compiler built in
 const loader = async function (content) {
   const callback = this.async();
-  // this.getOptions() is webpack5 only
-  const queryOptions = this.getOptions ? this.getOptions() : getOptions(this);
-  const options = Object.assign({}, queryOptions, {
+  const options = Object.assign({}, this.getOptions(), {
     filepath: this.resourcePath,
   });
 
