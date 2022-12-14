@@ -1,4 +1,3 @@
-import { parse } from '@babel/parser';
 import * as t from '@babel/types';
 import generate from '@babel/generator';
 import camelCase from 'lodash/camelCase';
@@ -34,9 +33,6 @@ export type MetaExport = Record<string, any>;
 // Generate the MDX as is, but append named exports for every
 // story in the contents
 
-const STORY_REGEX = /^<Story[\s>]/;
-const CANVAS_REGEX = /^<(Preview|Canvas)[\s>]/;
-const META_REGEX = /^<Meta[\s>]/;
 const RESERVED =
   /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
 
