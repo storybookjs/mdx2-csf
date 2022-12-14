@@ -16,8 +16,10 @@ import {
   wrapperJs,
   stringifyMeta,
 } from './sb-mdx-plugin';
-import { CompileOptions, MdxCompileOptions } from './types';
+import type { CompileOptions, MdxCompileOptions, JSXOptions } from './types';
 import { transformJSXAsync, transformJSXSync } from './jsx';
+
+export type { CompileOptions, MdxCompileOptions, JSXOptions };
 
 export const SEPARATOR = '/* ========= */';
 
