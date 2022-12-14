@@ -37,9 +37,7 @@ describe('mdx2', () => {
     `;
     // @ts-ignore
     expect(clean(input)).toMatchInlineSnapshot(`
-      const foo = () => 'bar';
-
-      exports.foo = foo;
+      export const foo = () => 'bar';
       foo.storyName = 'foo';
       foo.parameters = {
         storySource: {
@@ -53,8 +51,7 @@ describe('mdx2', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -71,8 +68,7 @@ describe('mdx2', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 });
@@ -90,30 +86,24 @@ describe('full snapshots', () => {
     `;
     // @ts-ignore
     expect(compileSync(input)).toMatchInlineSnapshot(`
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.default = exports.foo = void 0;
-
-      var _react = require("@mdx-js/react");
-
-      var _jsxRuntime = require("react/jsx-runtime");
+      import { useMDXComponents as _provideComponents } from "@mdx-js/react";
+      import { jsx as _jsx } from "react/jsx-runtime";
+      import { jsxs as _jsxs } from "react/jsx-runtime";
+      import { Fragment as _Fragment } from "react/jsx-runtime";
 
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
-        } = Object.assign({}, (0, _react.useMDXComponents)(), props.components);
-        return MDXLayout ? /*#__PURE__*/(0, _jsxRuntime.jsx)(MDXLayout, { ...props,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_createMdxContent, {})
+        } = Object.assign({}, _provideComponents(), props.components);
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {})
         }) : _createMdxContent();
 
         function _createMdxContent() {
           const _components = Object.assign({
             h1: "h1",
             p: "p"
-          }, (0, _react.useMDXComponents)(), props.components),
+          }, _provideComponents(), props.components),
                 {
             Meta,
             Story
@@ -121,14 +111,14 @@ describe('full snapshots', () => {
 
           if (!Meta) _missingMdxReference("Meta", true);
           if (!Story) _missingMdxReference("Story", true);
-          return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_components.h1, {
+          return /*#__PURE__*/_jsxs(_Fragment, {
+            children: [/*#__PURE__*/_jsx(_components.h1, {
               children: "hello"
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsx)(Meta, {
+            }), "\\n", /*#__PURE__*/_jsx(Meta, {
               title: "foobar"
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsxs)(_components.p, {
+            }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
               children: ["world ", 2 + 1]
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsx)(Story, {
+            }), "\\n", /*#__PURE__*/_jsx(Story, {
               name: "foo",
               children: "bar"
             })]
@@ -142,9 +132,7 @@ describe('full snapshots', () => {
       /* ========= */
 
 
-      const foo = () => "bar";
-
-      exports.foo = foo;
+      export const foo = () => "bar";
       foo.storyName = 'foo';
       foo.parameters = {
         storySource: {
@@ -160,8 +148,7 @@ describe('full snapshots', () => {
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
   it('compile', async () => {
@@ -176,30 +163,24 @@ describe('full snapshots', () => {
     `;
     // @ts-ignore
     expect(await compile(input)).toMatchInlineSnapshot(`
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.default = exports.foo = void 0;
-
-      var _react = require("@mdx-js/react");
-
-      var _jsxRuntime = require("react/jsx-runtime");
+      import { useMDXComponents as _provideComponents } from "@mdx-js/react";
+      import { jsx as _jsx } from "react/jsx-runtime";
+      import { jsxs as _jsxs } from "react/jsx-runtime";
+      import { Fragment as _Fragment } from "react/jsx-runtime";
 
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
-        } = Object.assign({}, (0, _react.useMDXComponents)(), props.components);
-        return MDXLayout ? /*#__PURE__*/(0, _jsxRuntime.jsx)(MDXLayout, { ...props,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_createMdxContent, {})
+        } = Object.assign({}, _provideComponents(), props.components);
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {})
         }) : _createMdxContent();
 
         function _createMdxContent() {
           const _components = Object.assign({
             h1: "h1",
             p: "p"
-          }, (0, _react.useMDXComponents)(), props.components),
+          }, _provideComponents(), props.components),
                 {
             Meta,
             Story
@@ -207,14 +188,14 @@ describe('full snapshots', () => {
 
           if (!Meta) _missingMdxReference("Meta", true);
           if (!Story) _missingMdxReference("Story", true);
-          return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_components.h1, {
+          return /*#__PURE__*/_jsxs(_Fragment, {
+            children: [/*#__PURE__*/_jsx(_components.h1, {
               children: "hello"
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsx)(Meta, {
+            }), "\\n", /*#__PURE__*/_jsx(Meta, {
               title: "foobar"
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsxs)(_components.p, {
+            }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
               children: ["world ", 2 + 1]
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsx)(Story, {
+            }), "\\n", /*#__PURE__*/_jsx(Story, {
               name: "foo",
               children: "bar"
             })]
@@ -228,9 +209,7 @@ describe('full snapshots', () => {
       /* ========= */
 
 
-      const foo = () => "bar";
-
-      exports.foo = foo;
+      export const foo = () => "bar";
       foo.storyName = 'foo';
       foo.parameters = {
         storySource: {
@@ -246,8 +225,7 @@ describe('full snapshots', () => {
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
   it('sync & async should match', async () => {
@@ -280,35 +258,28 @@ describe('full snapshots', () => {
       </Canvas>
     `;
     expect(compileSync(input)).toMatchInlineSnapshot(`
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.default = exports.foo = void 0;
-
-      var _react = require("@mdx-js/react");
-
-      var _addonDocs = require("@storybook/addon-docs");
-
-      var _jsxRuntime = require("react/jsx-runtime");
+      import { useMDXComponents as _provideComponents } from "@mdx-js/react";
+      import { Canvas, Meta, Story } from '@storybook/addon-docs';
+      import { jsx as _jsx } from "react/jsx-runtime";
+      import { Fragment as _Fragment } from "react/jsx-runtime";
+      import { jsxs as _jsxs } from "react/jsx-runtime";
 
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
-        } = Object.assign({}, (0, _react.useMDXComponents)(), props.components);
-        return MDXLayout ? /*#__PURE__*/(0, _jsxRuntime.jsx)(MDXLayout, { ...props,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_createMdxContent, {})
+        } = Object.assign({}, _provideComponents(), props.components);
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {})
         }) : _createMdxContent();
 
         function _createMdxContent() {
-          return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_addonDocs.Meta, {
+          return /*#__PURE__*/_jsxs(_Fragment, {
+            children: [/*#__PURE__*/_jsx(Meta, {
               title: "MDX/Badge"
-            }), "\\n", /*#__PURE__*/(0, _jsxRuntime.jsx)(_addonDocs.Canvas, {
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_addonDocs.Story, {
+            }), "\\n", /*#__PURE__*/_jsx(Canvas, {
+              children: /*#__PURE__*/_jsx(Story, {
                 name: "foo",
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+                children: /*#__PURE__*/_jsx("div", {
                   children: "I'm a story"
                 })
               })
@@ -319,11 +290,9 @@ describe('full snapshots', () => {
       /* ========= */
 
 
-      const foo = () => /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      export const foo = () => /*#__PURE__*/_jsx("div", {
         children: "I'm a story"
       });
-
-      exports.foo = foo;
       foo.storyName = 'foo';
       foo.parameters = {
         storySource: {
@@ -339,8 +308,7 @@ describe('full snapshots', () => {
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -353,31 +321,22 @@ describe('full snapshots', () => {
       </Canvas>
     `;
     expect(compileSync(input)).toMatchInlineSnapshot(`
-      "use strict";
-
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-      exports.default = void 0;
-
-      var _react = require("@mdx-js/react");
-
-      var _addonDocs = require("@storybook/addon-docs");
-
-      var _jsxRuntime = require("react/jsx-runtime");
+      import { useMDXComponents as _provideComponents } from "@mdx-js/react";
+      import { Canvas } from '@storybook/addon-docs';
+      import { jsx as _jsx } from "react/jsx-runtime";
 
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
-        } = Object.assign({}, (0, _react.useMDXComponents)(), props.components);
-        return MDXLayout ? /*#__PURE__*/(0, _jsxRuntime.jsx)(MDXLayout, { ...props,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_createMdxContent, {})
+        } = Object.assign({}, _provideComponents(), props.components);
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {})
         }) : _createMdxContent();
 
         function _createMdxContent() {
-          return /*#__PURE__*/(0, _jsxRuntime.jsx)(_addonDocs.Canvas, {
+          return /*#__PURE__*/_jsx(Canvas, {
             mdxSource: "<h2>{\\"Some here\\"}</h2>",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("h2", {
+            children: /*#__PURE__*/_jsx("h2", {
               children: "Some here"
             })
           });
@@ -393,8 +352,7 @@ describe('full snapshots', () => {
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 });
@@ -415,12 +373,10 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const componentNotes = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const componentNotes = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Component notes',
         });
-
-      exports.componentNotes = componentNotes;
       componentNotes.storyName = 'component notes';
       componentNotes.parameters = {
         storySource: {
@@ -446,8 +402,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -464,12 +419,10 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const componentNotes = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const componentNotes = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Component notes',
         });
-
-      exports.componentNotes = componentNotes;
       componentNotes.storyName = 'component notes';
       componentNotes.parameters = {
         storySource: {
@@ -479,14 +432,13 @@ describe('docs-mdx-compiler-plugin', () => {
       const componentMeta = {
         title: 'Button',
         id: 'button-id',
-        component: _demo.Button,
+        component: Button,
         tags: ['mdx'],
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -511,12 +463,9 @@ describe('docs-mdx-compiler-plugin', () => {
         <Story name="renamed" story={MyStories.Foo} />
       `)
     ).toMatchInlineSnapshot(`
-      const _Basic_ = MyStories.Basic;
-      exports._Basic_ = _Basic_;
-      const _Other_ = _Other.Other;
-      exports._Other_ = _Other_;
-      const _Foo_ = MyStories.Foo;
-      exports._Foo_ = _Foo_;
+      export const _Basic_ = MyStories.Basic;
+      export const _Other_ = Other;
+      export const _Foo_ = MyStories.Foo;
       _Foo_.storyName = 'renamed';
       const componentMeta = {
         title: 'MDX/CSF imports',
@@ -525,8 +474,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -548,12 +496,10 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const one = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const one = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'One',
         });
-
-      exports.one = one;
       one.storyName = 'one';
       one.parameters = {
         storySource: {
@@ -562,7 +508,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       one.decorators = [
         (storyFn) =>
-          /*#__PURE__*/ (0, _jsxRuntime.jsx)('div', {
+          /*#__PURE__*/ _jsx('div', {
             className: 'local',
             children: storyFn(),
           }),
@@ -571,7 +517,7 @@ describe('docs-mdx-compiler-plugin', () => {
         title: 'Button',
         decorators: [
           (storyFn) =>
-            /*#__PURE__*/ (0, _jsxRuntime.jsx)('div', {
+            /*#__PURE__*/ _jsx('div', {
               style: {
                 backgroundColor: 'yellow',
               },
@@ -583,8 +529,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -600,11 +545,9 @@ describe('docs-mdx-compiler-plugin', () => {
         This is a documentation-only MDX file which cleans a dummy 'docsOnly: true' story.
       `)
     ).toMatchInlineSnapshot(`
-      const __page = () => {
+      export const __page = () => {
         throw new Error('Docs-only story');
       };
-
-      exports.__page = __page;
       __page.parameters = {
         docsOnly: true,
       };
@@ -615,8 +558,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -635,12 +577,10 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const one = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const one = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'One',
         });
-
-      exports.one = one;
       one.storyName = 'one';
       one.parameters = {
         storySource: {
@@ -664,8 +604,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -677,11 +616,9 @@ describe('docs-mdx-compiler-plugin', () => {
         <Meta title="Addons/Docs/what's in a title?" />
       `)
     ).toMatchInlineSnapshot(`
-      const __page = () => {
+      export const __page = () => {
         throw new Error('Docs-only story');
       };
-
-      exports.__page = __page;
       __page.parameters = {
         docsOnly: true,
       };
@@ -692,8 +629,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -718,25 +654,20 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const one = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const one = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'One',
         });
-
-      exports.one = one;
       one.storyName = 'one';
       one.parameters = {
         storySource: {
           source: '<Button>{"One"}</Button>',
         },
       };
-
-      const helloStory = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const helloStory = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Hello button',
         });
-
-      exports.helloStory = helloStory;
       helloStory.storyName = 'hello story';
       helloStory.parameters = {
         storySource: {
@@ -750,8 +681,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -772,25 +702,20 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const componentNotes = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const componentNotes = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Component notes',
         });
-
-      exports.componentNotes = componentNotes;
       componentNotes.storyName = 'component notes';
       componentNotes.parameters = {
         storySource: {
           source: '<Button>{"Component notes"}</Button>',
         },
       };
-
-      const storyNotes = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const storyNotes = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Story notes',
         });
-
-      exports.storyNotes = storyNotes;
       storyNotes.storyName = 'story notes';
       storyNotes.parameters = {
         storySource: {
@@ -805,14 +730,13 @@ describe('docs-mdx-compiler-plugin', () => {
         parameters: {
           notes: 'component notes',
         },
-        component: _demo.Button,
+        component: Button,
         tags: ['mdx'],
         includeStories: ['componentNotes', 'storyNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -846,25 +770,20 @@ describe('docs-mdx-compiler-plugin', () => {
         </Canvas>
       `)
     ).toMatchInlineSnapshot(`
-      const helloButton = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const helloButton = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Hello button',
         });
-
-      exports.helloButton = helloButton;
       helloButton.storyName = 'hello button';
       helloButton.parameters = {
         storySource: {
           source: '<Button>{"Hello button"}</Button>',
         },
       };
-
-      const two = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const two = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Two',
         });
-
-      exports.two = two;
       two.storyName = 'two';
       two.parameters = {
         storySource: {
@@ -876,14 +795,13 @@ describe('docs-mdx-compiler-plugin', () => {
         parameters: {
           notes: 'component notes',
         },
-        component: _demo.Button,
+        component: Button,
         tags: ['mdx'],
         includeStories: ['helloButton', 'two'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -908,8 +826,7 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const componentNotes = Template.bind({});
-      exports.componentNotes = componentNotes;
+      export const componentNotes = Template.bind({});
       componentNotes.storyName = 'component notes';
       componentNotes.argTypes = {
         a: {
@@ -935,8 +852,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -955,8 +871,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -972,9 +887,7 @@ describe('docs-mdx-compiler-plugin', () => {
         <Story name="text">Plain text</Story>
       `)
     ).toMatchInlineSnapshot(`
-      const text = () => 'Plain text';
-
-      exports.text = text;
+      export const text = () => 'Plain text';
       text.storyName = 'text';
       text.parameters = {
         storySource: {
@@ -988,8 +901,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1020,51 +932,40 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const one = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const one = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'One',
         });
-
-      exports.one = one;
       one.storyName = 'one';
       one.parameters = {
         storySource: {
           source: '<Button>{"One"}</Button>',
         },
       };
-
-      const helloStory = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const helloStory = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'Hello button',
         });
-
-      exports.helloStory = helloStory;
       helloStory.storyName = 'hello story';
       helloStory.parameters = {
         storySource: {
           source: '<Button>{"Hello button"}</Button>',
         },
       };
-
-      const wPunctuation = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const wPunctuation = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'with punctuation',
         });
-
-      exports.wPunctuation = wPunctuation;
       wPunctuation.storyName = 'w/punctuation';
       wPunctuation.parameters = {
         storySource: {
           source: '<Button>{"with punctuation"}</Button>',
         },
       };
-
-      const _1FineDay = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+      export const _1FineDay = () =>
+        /*#__PURE__*/ _jsx(Button, {
           children: 'starts with number',
         });
-
-      exports._1FineDay = _1FineDay;
       _1FineDay.storyName = '1 fine day';
       _1FineDay.parameters = {
         storySource: {
@@ -1078,8 +979,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1099,8 +999,7 @@ describe('docs-mdx-compiler-plugin', () => {
         <Story name="basic">{basicFn}</Story>
       `)
     ).toMatchInlineSnapshot(`
-      const basic = assertIsFn(basicFn);
-      exports.basic = basic;
+      export const basic = assertIsFn(basicFn);
       basic.storyName = 'basic';
       basic.parameters = {
         storySource: {
@@ -1114,8 +1013,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1132,14 +1030,12 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const functionStory = () => {
+      export const functionStory = () => {
         const btn = document.createElement('button');
         btn.innerHTML = 'Hello Button';
         btn.addEventListener('click', action('Click'));
         return btn;
       };
-
-      exports.functionStory = functionStory;
       functionStory.storyName = 'function';
       functionStory.parameters = {
         storySource: {
@@ -1152,8 +1048,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1172,20 +1067,18 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const multipleChildren = () =>
-        /*#__PURE__*/ (0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+      export const multipleChildren = () =>
+        /*#__PURE__*/ _jsxs(_Fragment, {
           children: [
-            /*#__PURE__*/ (0, _jsxRuntime.jsx)('p', {
+            /*#__PURE__*/ _jsx('p', {
               children: 'Hello Child #1',
             }),
             '"\\\\n"',
-            /*#__PURE__*/ (0, _jsxRuntime.jsx)('p', {
+            /*#__PURE__*/ _jsx('p', {
               children: 'Hello Child #2',
             }),
           ],
         });
-
-      exports.multipleChildren = multipleChildren;
       multipleChildren.storyName = 'multiple children';
       multipleChildren.parameters = {
         storySource: {
@@ -1199,8 +1092,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1228,17 +1120,15 @@ describe('docs-mdx-compiler-plugin', () => {
         </Story>
       `)
     ).toMatchInlineSnapshot(`
-      const toStorybook = () => ({
+      export const toStorybook = () => ({
         template: '<storybook-welcome-component (showApp)="showApp()"></storybook-welcome-component>',
         props: {
-          showApp: (0, _addonLinks.linkTo)('Button'),
+          showApp: linkTo('Button'),
         },
         moduleMetadata: {
-          declarations: [_demo.Welcome],
+          declarations: [Welcome],
         },
       });
-
-      exports.toStorybook = toStorybook;
       toStorybook.storyName = 'to storybook';
       toStorybook.parameters = {
         storySource: {
@@ -1253,8 +1143,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1273,8 +1162,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1290,23 +1178,20 @@ describe('docs-mdx-compiler-plugin', () => {
         ].join('\n')
       )
     ).toMatchInlineSnapshot(`
-      const __page = () => {
+      export const __page = () => {
         throw new Error('Docs-only story');
       };
-
-      exports.__page = __page;
       __page.parameters = {
         docsOnly: true,
       };
       const componentMeta = {
-        title: \`\${(0, _titleGenerators.titleFunction)('template')}\`,
+        title: \`\${titleFunction('template')}\`,
         tags: ['mdx'],
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1327,8 +1212,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 
@@ -1362,11 +1246,9 @@ describe('docs-mdx-compiler-plugin', () => {
           Spme **markdown** here!
         `)
       ).toMatchInlineSnapshot(`
-        const __page = () => {
+        export const __page = () => {
           throw new Error('Docs-only story');
         };
-
-        exports.__page = __page;
         __page.parameters = {
           docsOnly: true,
         };
@@ -1376,8 +1258,7 @@ describe('docs-mdx-compiler-plugin', () => {
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
 
@@ -1394,12 +1275,10 @@ describe('docs-mdx-compiler-plugin', () => {
           </Story>
         `)
       ).toMatchInlineSnapshot(`
-        const basic = () =>
-          /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, {
+        export const basic = () =>
+          /*#__PURE__*/ _jsx(Button, {
             children: 'Basic',
           });
-
-        exports.basic = basic;
         basic.storyName = 'Basic';
         basic.parameters = {
           storySource: {
@@ -1407,14 +1286,13 @@ describe('docs-mdx-compiler-plugin', () => {
           },
         };
         const componentMeta = {
-          component: _demo.Button,
+          component: Button,
           tags: ['mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
 
@@ -1429,8 +1307,7 @@ describe('docs-mdx-compiler-plugin', () => {
           <Story name="Basic" />
         `)
       ).toMatchInlineSnapshot(`
-        const basic = {};
-        exports.basic = basic;
+        export const basic = {};
         basic.storyName = 'Basic';
         basic.parameters = {
           storySource: {
@@ -1439,14 +1316,13 @@ describe('docs-mdx-compiler-plugin', () => {
         };
         const componentMeta = {
           title: 'Button',
-          component: _demo.Button,
+          component: Button,
           tags: ['mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
 
@@ -1461,8 +1337,7 @@ describe('docs-mdx-compiler-plugin', () => {
           <Story name="Basic" />
         `)
       ).toMatchInlineSnapshot(`
-        const basic = {};
-        exports.basic = basic;
+        export const basic = {};
         basic.storyName = 'Basic';
         basic.parameters = {
           storySource: {
@@ -1471,15 +1346,14 @@ describe('docs-mdx-compiler-plugin', () => {
         };
         const componentMeta = {
           title: 'Button',
-          component: _demo.Button,
-          render: (args) => /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, { ...args }),
+          component: Button,
+          render: (args) => /*#__PURE__*/ _jsx(Button, { ...args }),
           tags: ['mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
 
@@ -1494,8 +1368,7 @@ describe('docs-mdx-compiler-plugin', () => {
           <Story name="Basic" render={(args) => <Button {...args} />} />
         `)
       ).toMatchInlineSnapshot(`
-        const basic = {};
-        exports.basic = basic;
+        export const basic = {};
         basic.storyName = 'Basic';
         basic.parameters = {
           storySource: {
@@ -1503,18 +1376,17 @@ describe('docs-mdx-compiler-plugin', () => {
           },
         };
 
-        basic.render = (args) => /*#__PURE__*/ (0, _jsxRuntime.jsx)(_demo.Button, { ...args });
+        basic.render = (args) => /*#__PURE__*/ _jsx(Button, { ...args });
 
         const componentMeta = {
           title: 'Button',
-          component: _demo.Button,
+          component: Button,
           tags: ['mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
 
@@ -1529,8 +1401,7 @@ describe('docs-mdx-compiler-plugin', () => {
           <Story name="Basic" play={() => console.log('play')} />
         `)
       ).toMatchInlineSnapshot(`
-        const basic = {};
-        exports.basic = basic;
+        export const basic = {};
         basic.storyName = 'Basic';
         basic.parameters = {
           storySource: {
@@ -1542,14 +1413,13 @@ describe('docs-mdx-compiler-plugin', () => {
 
         const componentMeta = {
           title: 'Button',
-          component: _demo.Button,
+          component: Button,
           tags: ['mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
         componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-        var _default = componentMeta;
-        exports.default = _default;
+        export default componentMeta;
       `);
     });
   });
@@ -1582,11 +1452,9 @@ describe('docs-mdx-compiler-plugin', () => {
         \`}</style>
       `)
     ).toMatchInlineSnapshot(`
-      const __page = () => {
+      export const __page = () => {
         throw new Error('Docs-only story');
       };
-
-      exports.__page = __page;
       __page.parameters = {
         docsOnly: true,
       };
@@ -1597,8 +1465,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentMeta.parameters = componentMeta.parameters || {};
       componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
-      var _default = componentMeta;
-      exports.default = _default;
+      export default componentMeta;
     `);
   });
 });

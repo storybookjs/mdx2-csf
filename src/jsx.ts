@@ -7,6 +7,8 @@ function getBabelOptions(jsxOptions: JSXOptions): BabelOptions {
   return {
     filename: 'file.js',
     sourceType: 'module',
+    configFile: false,
+    babelrc: false,
     presets: [
       [
         presetReact,
