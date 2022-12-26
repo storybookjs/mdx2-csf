@@ -307,7 +307,7 @@ export function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     args,
     argTypes,
     render,
-    tags: "['mdx']",
+    tags: "['stories-mdx']",
   };
 }
 
