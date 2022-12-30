@@ -46,7 +46,7 @@ describe('mdx2', () => {
       };
       const componentMeta = {
         title: 'foobar',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['foo'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -141,7 +141,7 @@ describe('full snapshots', () => {
       };
       const componentMeta = {
         title: 'foobar',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -218,7 +218,7 @@ describe('full snapshots', () => {
       };
       const componentMeta = {
         title: 'foobar',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -301,7 +301,7 @@ describe('full snapshots', () => {
       };
       const componentMeta = {
         title: 'MDX/Badge',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -397,7 +397,7 @@ describe('docs-mdx-compiler-plugin', () => {
             name: 'B',
           },
         },
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -433,7 +433,7 @@ describe('docs-mdx-compiler-plugin', () => {
         title: 'Button',
         id: 'button-id',
         component: Button,
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -469,7 +469,7 @@ describe('docs-mdx-compiler-plugin', () => {
       _Foo_.storyName = 'renamed';
       const componentMeta = {
         title: 'MDX/CSF imports',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['_Basic_', '_Other_', '_Foo_'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -524,7 +524,7 @@ describe('docs-mdx-compiler-plugin', () => {
               children: storyFn(),
             }),
         ],
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['one'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -553,7 +553,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'docs-only',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -599,7 +599,7 @@ describe('docs-mdx-compiler-plugin', () => {
             foo: 1,
           }),
         ],
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['one'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -624,7 +624,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: "Addons/Docs/what's in a title?",
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -676,7 +676,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Button',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['one', 'helloStory'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -731,7 +731,7 @@ describe('docs-mdx-compiler-plugin', () => {
           notes: 'component notes',
         },
         component: Button,
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes', 'storyNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -796,7 +796,7 @@ describe('docs-mdx-compiler-plugin', () => {
           notes: 'component notes',
         },
         component: Button,
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['helloButton', 'two'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -847,7 +847,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Button',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -896,7 +896,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Text',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['text'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -974,7 +974,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Button',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['one', 'helloStory', 'wPunctuation', '_1FineDay'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -1008,7 +1008,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'story-function-var',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['basic'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -1087,7 +1087,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Multiple',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['multipleChildren'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -1138,7 +1138,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'MDX|Welcome',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['toStorybook'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -1186,7 +1186,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: \`\${titleFunction('template')}\`,
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
@@ -1253,7 +1253,7 @@ describe('docs-mdx-compiler-plugin', () => {
           docsOnly: true,
         };
         const componentMeta = {
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['__page'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1287,7 +1287,7 @@ describe('docs-mdx-compiler-plugin', () => {
         };
         const componentMeta = {
           component: Button,
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1317,7 +1317,7 @@ describe('docs-mdx-compiler-plugin', () => {
         const componentMeta = {
           title: 'Button',
           component: Button,
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1348,7 +1348,7 @@ describe('docs-mdx-compiler-plugin', () => {
           title: 'Button',
           component: Button,
           render: (args) => /*#__PURE__*/ _jsx(Button, { ...args }),
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1381,7 +1381,7 @@ describe('docs-mdx-compiler-plugin', () => {
         const componentMeta = {
           title: 'Button',
           component: Button,
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1414,7 +1414,7 @@ describe('docs-mdx-compiler-plugin', () => {
         const componentMeta = {
           title: 'Button',
           component: Button,
-          tags: ['mdx'],
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
@@ -1460,7 +1460,7 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       const componentMeta = {
         title: 'Example/Introduction',
-        tags: ['mdx'],
+        tags: ['stories-mdx'],
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
