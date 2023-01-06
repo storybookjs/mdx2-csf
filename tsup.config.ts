@@ -13,6 +13,7 @@ export default defineConfig([
     format: 'esm',
     dts: {
       entry: ['./src/index.ts'],
+      resolve: true,
     },
     esbuildOptions(options, context) {
       options.platform = 'node';
