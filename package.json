@@ -1,6 +1,6 @@
 {
   "name": "@storybook/mdx2-csf",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "MDXv2 to CSF webpack compiler and loader",
   "repository": {
     "type": "git",
