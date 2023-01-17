@@ -64,6 +64,15 @@ module.exports = {
 };
 ```
 
+### Options
+
+The loader accepts the following options:
+
+- `options.pragma` (default: `React.createElement`)
+  Pragma for JSX. e.g. A `pragma` of `h` will compile `<Elem />` to `h(Elem, {})`.
+- `options.pragmaImportSource` (default: `react`)
+  Where to import the pragma from.
+
 ## Contributing
 
 We welcome contributions to Storybook!
