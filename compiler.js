@@ -1,6 +1,6 @@
 const { plugin, postprocess } = require('./dist/cjs');
 
-const compileAsync = async (code, { skipCsf }) => {
+const compileAsync = async (code, { skipCsf, mdxCompileOptions }) => {
   // This async import is needed because these libraries are ESM
   // and this file is CJS. Furthermore, we keep this file out of
   // the src directory so that babel doesn't turn these into `require`
@@ -11,6 +11,7 @@ const compileAsync = async (code, { skipCsf }) => {
   const store = { exports: '', toEstree };
   const rehypePlugins = skipCsf ? undefined : [[plugin, store]];
   const output = await compile(code, {
+    ...mdxCompileOptions,
     rehypePlugins,
     providerImportSource: '@mdx-js/react',
   });
