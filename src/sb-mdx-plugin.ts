@@ -122,6 +122,11 @@ const expressionOrNull = (attr: t.JSXAttribute['value']) =>
   t.isJSXExpressionContainer(attr) ? attr.expression : null;
 
 export function genStoryExport(ast: t.JSXElement, context: Context) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const storyName = idOrNull(getAttr(ast.openingElement, 'name'));
   const storyId = idOrNull(getAttr(ast.openingElement, 'id'));
   const storyRef = getAttr(ast.openingElement, 'story') as t.JSXExpressionContainer;
@@ -264,6 +269,11 @@ export function genCanvasExports(ast: t.JSXElement, context: Context) {
 }
 
 export function genMeta(ast: t.JSXElement, options: CompilerOptions) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const titleAttr = getAttr(ast.openingElement, 'title');
   const idAttr = getAttr(ast.openingElement, 'id');
   let title = null;
