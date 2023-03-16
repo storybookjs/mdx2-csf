@@ -1233,6 +1233,34 @@ describe('docs-mdx-compiler-plugin', () => {
     ).rejects.toThrow('Expected a Story name, id, or story attribute');
   });
 
+  it("errors on story 'of' prop", async () => {
+    await expect(async () =>
+      clean(dedent`
+        import * as MyStories from './My.stories';
+        import { Story, Meta } from '@storybook/addon-docs';
+
+        <Meta title="Button" />
+
+        # Bad story
+
+        <Story of={MyStories.Primary} />
+      `)
+    ).rejects.toThrow(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  });
+
+  it("errors on meta 'of' prop", async () => {
+    await expect(async () =>
+      clean(dedent`
+        import * as MyStories from './My.stories';
+        import { Meta } from '@storybook/addon-docs';
+
+        <Meta title="Button" of={MyStories} />
+      `)
+    ).rejects.toThrow(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  });
+
   describe('csf3', () => {
     it('auto-title-docs-only.mdx', () => {
       expect(
