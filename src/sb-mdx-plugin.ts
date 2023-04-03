@@ -1,4 +1,3 @@
-import { parse } from '@babel/parser';
 import * as t from '@babel/types';
 import generate from '@babel/generator';
 import camelCase from 'lodash/camelCase';
@@ -34,9 +33,6 @@ export type MetaExport = Record<string, any>;
 // Generate the MDX as is, but append named exports for every
 // story in the contents
 
-const STORY_REGEX = /^<Story[\s>]/;
-const CANVAS_REGEX = /^<(Preview|Canvas)[\s>]/;
-const META_REGEX = /^<Meta[\s>]/;
 const RESERVED =
   /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
 
@@ -126,6 +122,11 @@ const expressionOrNull = (attr: t.JSXAttribute['value']) =>
   t.isJSXExpressionContainer(attr) ? attr.expression : null;
 
 export function genStoryExport(ast: t.JSXElement, context: Context) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const storyName = idOrNull(getAttr(ast.openingElement, 'name'));
   const storyId = idOrNull(getAttr(ast.openingElement, 'id'));
   const storyRef = getAttr(ast.openingElement, 'story') as t.JSXExpressionContainer;
@@ -268,6 +269,11 @@ export function genCanvasExports(ast: t.JSXElement, context: Context) {
 }
 
 export function genMeta(ast: t.JSXElement, options: CompilerOptions) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const titleAttr = getAttr(ast.openingElement, 'title');
   const idAttr = getAttr(ast.openingElement, 'id');
   let title = null;
@@ -311,16 +317,15 @@ export function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     args,
     argTypes,
     render,
+    tags: "['stories-mdx']",
   };
 }
 
-// insert `mdxStoryNameToKey` and `mdxComponentMeta` into the context so that we
-// can reconstruct the Story ID dynamically from the `name` at render time
 export const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
-  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
+  page: MDXContent,
 };
 `.trim();
 
@@ -337,47 +342,3 @@ export function stringifyMeta(meta: object) {
   result += ' }';
   return result;
 }
-
-const hasStoryChild = (node: t.JSXElement): boolean => {
-  if (
-    node.openingElement &&
-    t.isJSXIdentifier(node.openingElement.name) &&
-    node.openingElement.name.name === 'Story'
-  ) {
-    return !!node;
-  }
-  if (node.children && node.children.length > 0) {
-    return !!node.children.find((child: t.JSXElement) => hasStoryChild(child));
-  }
-  return false;
-};
-
-const getMdxSource = (children: t.Node[]) =>
-  encodeURI(children.map((el) => generate(el).code).join('\n'));
-
-// Parse out the named exports from a node, where the key
-// is the variable name and the value is the AST of the
-// variable declaration initializer
-const getNamedExports = (node: HastElement) => {
-  const namedExports: Record<string, t.Expression> = {};
-  const ast = parse(node.value, {
-    sourceType: 'module',
-    plugins: ['jsx'],
-    // FIXME!!! presets: ['env]
-  });
-  if (t.isFile(ast) && t.isProgram(ast.program) && ast.program.body.length === 1) {
-    const exported = ast.program.body[0];
-    if (
-      t.isExportNamedDeclaration(exported) &&
-      t.isVariableDeclaration(exported.declaration) &&
-      exported.declaration.declarations.length === 1
-    ) {
-      const declaration = exported.declaration.declarations[0];
-      if (t.isVariableDeclarator(declaration) && t.isIdentifier(declaration.id)) {
-        const { name } = declaration.id;
-        namedExports[name] = declaration.init;
-      }
-    }
-  }
-  return namedExports;
-};

@@ -1,6 +1,13 @@
-const { getOptions } = require('loader-utils');
-const { compile } = require('./compiler');
+const { compile } = require('./dist/index');
 
+// FIXME: we shouldn't be doing this, but we need it
+// for react MDX story definitions, e.g.
+//
+// <Story name="foo"><div>hi></div></Story>
+//
+// Which generates the code:
+//
+// export const foo = () => <div>hi</div>;
 const DEFAULT_RENDERER = `
 import React from 'react';
 `;
@@ -13,9 +20,7 @@ import React from 'react';
 // - MDX compiler built in
 const loader = async function (content) {
   const callback = this.async();
-  // this.getOptions() is webpack5 only
-  const queryOptions = this.getOptions ? this.getOptions() : getOptions(this);
-  const options = Object.assign({}, queryOptions, {
+  const options = Object.assign({}, this.getOptions(), {
     filepath: this.resourcePath,
   });
 
@@ -23,6 +28,7 @@ const loader = async function (content) {
   try {
     result = await compile(content, options);
   } catch (err) {
+    console.error('Error loading:', this.resourcePath)
     return callback(err);
   }
 
