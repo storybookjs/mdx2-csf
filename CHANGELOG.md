@@ -1,3 +1,15 @@
+# v0.0.4 (Mon Jan 16 2023)
+
+#### 🐛 Bug Fix
+
+- [Snyk] Upgrade loader-utils from 2.0.0 to 2.0.2 [#7](https://github.com/storybookjs/mdx2-csf/pull/7) ([@snyk-bot](https://github.com/snyk-bot))
+
+#### Authors: 1
+
+- Snyk bot ([@snyk-bot](https://github.com/snyk-bot))
+
+---
+
 # v0.0.3 (Thu May 05 2022)
 
 #### 🐛 Bug Fix
