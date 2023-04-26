@@ -50,7 +50,10 @@ describe('mdx2', () => {
         includeStories: ['foo'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -67,7 +70,10 @@ describe('mdx2', () => {
         includeStories: [],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -90,48 +96,45 @@ describe('full snapshots', () => {
       import { jsx as _jsx } from "react/jsx-runtime";
       import { jsxs as _jsxs } from "react/jsx-runtime";
       import { Fragment as _Fragment } from "react/jsx-runtime";
-
+      function _createMdxContent(props) {
+        const _components = Object.assign({
+            h1: "h1",
+            p: "p"
+          }, _provideComponents(), props.components),
+          {
+            Meta,
+            Story
+          } = _components;
+        if (!Meta) _missingMdxReference("Meta", true);
+        if (!Story) _missingMdxReference("Story", true);
+        return /*#__PURE__*/_jsxs(_Fragment, {
+          children: [/*#__PURE__*/_jsx(_components.h1, {
+            children: "hello"
+          }), "\\n", /*#__PURE__*/_jsx(Meta, {
+            title: "foobar"
+          }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
+            children: ["world ", 2 + 1]
+          }), "\\n", /*#__PURE__*/_jsx(Story, {
+            name: "foo",
+            children: "bar"
+          })]
+        });
+      }
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
         } = Object.assign({}, _provideComponents(), props.components);
-        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
-          children: /*#__PURE__*/_jsx(_createMdxContent, {})
-        }) : _createMdxContent();
-
-        function _createMdxContent() {
-          const _components = Object.assign({
-            h1: "h1",
-            p: "p"
-          }, _provideComponents(), props.components),
-                {
-            Meta,
-            Story
-          } = _components;
-
-          if (!Meta) _missingMdxReference("Meta", true);
-          if (!Story) _missingMdxReference("Story", true);
-          return /*#__PURE__*/_jsxs(_Fragment, {
-            children: [/*#__PURE__*/_jsx(_components.h1, {
-              children: "hello"
-            }), "\\n", /*#__PURE__*/_jsx(Meta, {
-              title: "foobar"
-            }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
-              children: ["world ", 2 + 1]
-            }), "\\n", /*#__PURE__*/_jsx(Story, {
-              name: "foo",
-              children: "bar"
-            })]
-          });
-        }
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, {
+          ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {
+            ...props
+          })
+        }) : _createMdxContent(props);
       }
-
       function _missingMdxReference(id, component) {
         throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
       }
       /* ========= */
-
-
       export const foo = () => "bar";
       foo.storyName = 'foo';
       foo.parameters = {
@@ -145,7 +148,8 @@ describe('full snapshots', () => {
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
       export default componentMeta;
@@ -167,48 +171,45 @@ describe('full snapshots', () => {
       import { jsx as _jsx } from "react/jsx-runtime";
       import { jsxs as _jsxs } from "react/jsx-runtime";
       import { Fragment as _Fragment } from "react/jsx-runtime";
-
+      function _createMdxContent(props) {
+        const _components = Object.assign({
+            h1: "h1",
+            p: "p"
+          }, _provideComponents(), props.components),
+          {
+            Meta,
+            Story
+          } = _components;
+        if (!Meta) _missingMdxReference("Meta", true);
+        if (!Story) _missingMdxReference("Story", true);
+        return /*#__PURE__*/_jsxs(_Fragment, {
+          children: [/*#__PURE__*/_jsx(_components.h1, {
+            children: "hello"
+          }), "\\n", /*#__PURE__*/_jsx(Meta, {
+            title: "foobar"
+          }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
+            children: ["world ", 2 + 1]
+          }), "\\n", /*#__PURE__*/_jsx(Story, {
+            name: "foo",
+            children: "bar"
+          })]
+        });
+      }
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
         } = Object.assign({}, _provideComponents(), props.components);
-        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
-          children: /*#__PURE__*/_jsx(_createMdxContent, {})
-        }) : _createMdxContent();
-
-        function _createMdxContent() {
-          const _components = Object.assign({
-            h1: "h1",
-            p: "p"
-          }, _provideComponents(), props.components),
-                {
-            Meta,
-            Story
-          } = _components;
-
-          if (!Meta) _missingMdxReference("Meta", true);
-          if (!Story) _missingMdxReference("Story", true);
-          return /*#__PURE__*/_jsxs(_Fragment, {
-            children: [/*#__PURE__*/_jsx(_components.h1, {
-              children: "hello"
-            }), "\\n", /*#__PURE__*/_jsx(Meta, {
-              title: "foobar"
-            }), "\\n", /*#__PURE__*/_jsxs(_components.p, {
-              children: ["world ", 2 + 1]
-            }), "\\n", /*#__PURE__*/_jsx(Story, {
-              name: "foo",
-              children: "bar"
-            })]
-          });
-        }
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, {
+          ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {
+            ...props
+          })
+        }) : _createMdxContent(props);
       }
-
       function _missingMdxReference(id, component) {
         throw new Error("Expected " + (component ? "component" : "object") + " \`" + id + "\` to be defined: you likely forgot to import, pass, or provide it.");
       }
       /* ========= */
-
-
       export const foo = () => "bar";
       foo.storyName = 'foo';
       foo.parameters = {
@@ -222,7 +223,8 @@ describe('full snapshots', () => {
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
       export default componentMeta;
@@ -263,33 +265,32 @@ describe('full snapshots', () => {
       import { jsx as _jsx } from "react/jsx-runtime";
       import { Fragment as _Fragment } from "react/jsx-runtime";
       import { jsxs as _jsxs } from "react/jsx-runtime";
-
+      function _createMdxContent(props) {
+        return /*#__PURE__*/_jsxs(_Fragment, {
+          children: [/*#__PURE__*/_jsx(Meta, {
+            title: "MDX/Badge"
+          }), "\\n", /*#__PURE__*/_jsx(Canvas, {
+            children: /*#__PURE__*/_jsx(Story, {
+              name: "foo",
+              children: /*#__PURE__*/_jsx("div", {
+                children: "I'm a story"
+              })
+            })
+          })]
+        });
+      }
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
         } = Object.assign({}, _provideComponents(), props.components);
-        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
-          children: /*#__PURE__*/_jsx(_createMdxContent, {})
-        }) : _createMdxContent();
-
-        function _createMdxContent() {
-          return /*#__PURE__*/_jsxs(_Fragment, {
-            children: [/*#__PURE__*/_jsx(Meta, {
-              title: "MDX/Badge"
-            }), "\\n", /*#__PURE__*/_jsx(Canvas, {
-              children: /*#__PURE__*/_jsx(Story, {
-                name: "foo",
-                children: /*#__PURE__*/_jsx("div", {
-                  children: "I'm a story"
-                })
-              })
-            })]
-          });
-        }
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, {
+          ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {
+            ...props
+          })
+        }) : _createMdxContent(props);
       }
       /* ========= */
-
-
       export const foo = () => /*#__PURE__*/_jsx("div", {
         children: "I'm a story"
       });
@@ -305,7 +306,8 @@ describe('full snapshots', () => {
         includeStories: ["foo"]
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
       export default componentMeta;
@@ -324,32 +326,32 @@ describe('full snapshots', () => {
       import { useMDXComponents as _provideComponents } from "@mdx-js/react";
       import { Canvas } from '@storybook/addon-docs';
       import { jsx as _jsx } from "react/jsx-runtime";
-
+      function _createMdxContent(props) {
+        return /*#__PURE__*/_jsx(Canvas, {
+          mdxSource: "<h2>{\\"Some here\\"}</h2>",
+          children: /*#__PURE__*/_jsx("h2", {
+            children: "Some here"
+          })
+        });
+      }
       function MDXContent(props = {}) {
         const {
           wrapper: MDXLayout
         } = Object.assign({}, _provideComponents(), props.components);
-        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, { ...props,
-          children: /*#__PURE__*/_jsx(_createMdxContent, {})
-        }) : _createMdxContent();
-
-        function _createMdxContent() {
-          return /*#__PURE__*/_jsx(Canvas, {
-            mdxSource: "<h2>{\\"Some here\\"}</h2>",
-            children: /*#__PURE__*/_jsx("h2", {
-              children: "Some here"
-            })
-          });
-        }
+        return MDXLayout ? /*#__PURE__*/_jsx(MDXLayout, {
+          ...props,
+          children: /*#__PURE__*/_jsx(_createMdxContent, {
+            ...props
+          })
+        }) : _createMdxContent(props);
       }
       /* ========= */
-
-
       const componentMeta = {
         includeStories: []
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}),
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
         page: MDXContent
       };
       export default componentMeta;
@@ -401,7 +403,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -437,7 +442,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -473,7 +481,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['_Basic_', '_Other_', '_Foo_'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -528,7 +539,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['one'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -557,7 +571,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -603,7 +620,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['one'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -628,7 +648,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -680,7 +703,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['one', 'helloStory'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -735,7 +761,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['componentNotes', 'storyNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -800,7 +829,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['helloButton', 'two'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -851,7 +883,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['componentNotes'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -870,7 +905,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: [],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -900,7 +938,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['text'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -978,7 +1019,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['one', 'helloStory', 'wPunctuation', '_1FineDay'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1012,7 +1056,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['basic'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1047,7 +1094,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['functionStory'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1073,7 +1123,6 @@ describe('docs-mdx-compiler-plugin', () => {
             /*#__PURE__*/ _jsx('p', {
               children: 'Hello Child #1',
             }),
-            '"\\\\n"',
             /*#__PURE__*/ _jsx('p', {
               children: 'Hello Child #2',
             }),
@@ -1082,7 +1131,7 @@ describe('docs-mdx-compiler-plugin', () => {
       multipleChildren.storyName = 'multiple children';
       multipleChildren.parameters = {
         storySource: {
-          source: '<p>{"Hello Child #1"}</p>\\n"\\\\n"\\n<p>{"Hello Child #2"}</p>',
+          source: '<p>{"Hello Child #1"}</p>\\n<p>{"Hello Child #2"}</p>',
         },
       };
       const componentMeta = {
@@ -1091,7 +1140,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['multipleChildren'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1142,7 +1194,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['toStorybook'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1161,7 +1216,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: [],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1190,7 +1248,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1211,7 +1272,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: [],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
@@ -1285,7 +1349,10 @@ describe('docs-mdx-compiler-plugin', () => {
           includeStories: ['__page'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1319,7 +1386,10 @@ describe('docs-mdx-compiler-plugin', () => {
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1349,7 +1419,10 @@ describe('docs-mdx-compiler-plugin', () => {
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1375,12 +1448,18 @@ describe('docs-mdx-compiler-plugin', () => {
         const componentMeta = {
           title: 'Button',
           component: Button,
-          render: (args) => /*#__PURE__*/ _jsx(Button, { ...args }),
+          render: (args) =>
+            /*#__PURE__*/ _jsx(Button, {
+              ...args,
+            }),
           tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1403,9 +1482,10 @@ describe('docs-mdx-compiler-plugin', () => {
             source: '{}',
           },
         };
-
-        basic.render = (args) => /*#__PURE__*/ _jsx(Button, { ...args });
-
+        basic.render = (args) =>
+          /*#__PURE__*/ _jsx(Button, {
+            ...args,
+          });
         const componentMeta = {
           title: 'Button',
           component: Button,
@@ -1413,7 +1493,10 @@ describe('docs-mdx-compiler-plugin', () => {
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1436,9 +1519,7 @@ describe('docs-mdx-compiler-plugin', () => {
             source: '{}',
           },
         };
-
         basic.play = () => console.log('play');
-
         const componentMeta = {
           title: 'Button',
           component: Button,
@@ -1446,7 +1527,10 @@ describe('docs-mdx-compiler-plugin', () => {
           includeStories: ['basic'],
         };
         componentMeta.parameters = componentMeta.parameters || {};
-        componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+        componentMeta.parameters.docs = {
+          ...(componentMeta.parameters.docs || {}),
+          page: MDXContent,
+        };
         export default componentMeta;
       `);
     });
@@ -1492,7 +1576,10 @@ describe('docs-mdx-compiler-plugin', () => {
         includeStories: ['__page'],
       };
       componentMeta.parameters = componentMeta.parameters || {};
-      componentMeta.parameters.docs = { ...(componentMeta.parameters.docs || {}), page: MDXContent };
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: MDXContent,
+      };
       export default componentMeta;
     `);
   });
