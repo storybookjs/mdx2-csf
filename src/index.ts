@@ -212,9 +212,8 @@ function getCompilerOptionsAndContext(
   return {
     options: {
       providerImportSource: '@mdx-js/react',
-      rehypePlugins: [[plugin, context]],
       ...mdxCompileOptions,
-
+      rehypePlugins: [...(mdxCompileOptions?.rehypePlugins || []), [plugin, context]],
       // preserve the JSX, we'll deal with it using babel
       jsx: true,
     },
