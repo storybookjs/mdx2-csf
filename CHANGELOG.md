@@ -1,3 +1,21 @@
+# v1.1.0 (Tue May 09 2023)
+
+#### 🚀 Enhancement
+
+- regen lockfile [#43](https://github.com/storybookjs/mdx2-csf/pull/43) ([@ndelangen](https://github.com/ndelangen))
+
+#### 🐛 Bug Fix
+
+- Refactor rehypePlugins configuration [#42](https://github.com/storybookjs/mdx2-csf/pull/42) (mehak.fatima@zivver.com)
+
+#### Authors: 3
+
+- Mehak Fatima ([@MehakFatima24](https://github.com/MehakFatima24))
+- Michael Shilman ([@shilman](https://github.com/shilman))
+- Norbert de Langen ([@ndelangen](https://github.com/ndelangen))
+
+---
+
 # v1.0.0 (Mon Apr 03 2023)
 
 #### 💥 Breaking Change
